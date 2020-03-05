@@ -1,0 +1,355 @@
+﻿using OCL1P1.model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OCL1P1.analyzer
+{
+    class LexicalAnalyzer
+    {
+        private static LexicalAnalyzer instance;
+        private string auxiliary;
+        private int state;
+        private int idToken;
+        private int idError;
+        private int row;
+        private int column;
+
+        internal List<Token> ListToken { get; set; }
+        internal List<Error> ListError { get; set; }
+
+        public LexicalAnalyzer()
+        {
+            auxiliary = "";
+            state = 0;
+            idToken = 0;
+            idError = 0;
+            row = 1;
+            column = 1;
+
+            ListToken = new List<Token>();
+            ListError = new List<Error>();
+        }
+
+        public static LexicalAnalyzer Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new LexicalAnalyzer();
+                }
+                return instance;
+            }
+        }
+
+
+
+        public void Scanner(String entry)
+        {
+            char character;
+            entry += "#";
+
+            for (int i = 0; i < entry.Length; i++)
+            {
+                character = entry.ElementAt(i);
+                switch (state)
+                {
+                    case 0:
+                        // Reserved Word
+                        if (char.IsLetter(character))
+                        {
+                            state = 1;
+                            auxiliary += character;
+                        }
+                        // Digit
+                        else if (char.IsDigit(character))
+                        {
+                            state = 2;
+                            auxiliary += character;
+                        }
+                        // String
+                        else if (character.Equals('"'))
+                        {
+                            state = 3;
+                            auxiliary += character;
+                        }
+                        // Assignment
+                        else if (character.Equals('-'))
+                        {
+                            state = 4;
+                            auxiliary += character;
+                        }
+                        // Single Line Comment
+                        else if (character.Equals('/'))
+                        {
+                            state = 5;
+                            auxiliary += character;
+                        }
+                        // Multiline Comment
+                        else if (character.Equals('<'))
+                        {
+                            state = 7;
+                            auxiliary += character;
+                        }
+                        // Blanks and line breaks
+                        else if (char.IsWhiteSpace(character))
+                        {
+                            state = 0;
+                            auxiliary = "";
+                            // Change row and restart columns in line breaks
+                            if (character.CompareTo('\n') == 0)
+                            {
+                                column = 1;
+                                row++;
+                            }
+                        }
+                        // Symbol
+                        else if (!AddSymbol(character))
+                        {
+                            if (character.Equals('#') && i == (entry.Length - 1))
+                            {
+                                Console.WriteLine("Lexical analysis completed");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Lexical Error: Not Found '" + character + "' in defined patterns");
+                                addError(character.ToString());
+                                state = 0;
+                            }
+                        }
+                        break;
+                    case 1:
+                        if (char.IsLetter(character) || char.IsDigit(character))
+                        {
+                            state = 1;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            addWordReserved();
+                            i--;
+                        }
+                        break;
+                    case 2:
+                        if (char.IsDigit(character))
+                        {
+                            state = 2;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            addToken(Token.Type.NUMBER);
+                            i--;
+                        }
+                        break;
+                    case 3:
+                        if (!character.Equals('"'))
+                        {
+                            state = 3;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            auxiliary += character;
+                            addToken(Token.Type.STR);
+                        }
+                        break;
+                    case 4:
+                        if (character.Equals('>'))
+                        {
+                            auxiliary += character;
+                            addToken(Token.Type.ASSIGNMENT_SIGN);
+                        }
+                        else
+                        {
+                            AddSymbol(auxiliary.ElementAt(0));
+                            i--;
+                        }
+                        break;
+                    case 5:
+                        if (character.Equals('/'))
+                        {
+                            state = 6;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            AddSymbol(auxiliary.ElementAt(0));
+                            i--;
+                        }
+                        break;
+                    case 6:
+                        if (!character.Equals('\n'))
+                        {
+                            state = 6;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            auxiliary += character;
+                            addToken(Token.Type.COMMENT);
+                        }
+                        break;
+                    case 7:
+                        if (character.Equals('!'))
+                        {
+                            state = 8;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            AddSymbol(auxiliary.ElementAt(0));
+                            i--;
+                        }
+                        break;
+                    case 8:
+                        if (!character.Equals('!'))
+                        {
+                            state = 8;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            state = 9;
+                            auxiliary += character;
+                        }
+                        break;
+                    case 9:
+                        if (!character.Equals('>'))
+                        {
+                            state = 8;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            auxiliary += character;
+                            addToken(Token.Type.MULTILINE_COMMENT);
+                        }
+                        break;
+                }
+                column++;
+            }
+        }
+
+        private bool AddSymbol(char character)
+        {
+            if (character.Equals('{'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.SYMBOL_LEFT_CURLY_BRACKET);
+                return true;
+            }
+            else if (character.Equals('}'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.SYMBOL_RIGHT_CURLY_BRACKET);
+                return true;
+            }
+            else if (character.Equals(':'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.SYMBOL_COLON);
+                return true;
+            }
+            else if (character.Equals(';'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.SYMBOL_SEMICOLON);
+                return true;
+            }
+            else if (character.Equals(','))
+            {
+                auxiliary += character;
+                addToken(Token.Type.SYMBOL_COMMA);
+                return true;
+            }
+            else if (character.Equals('%'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.PERCENT_SIGN);
+                return true;
+            }
+            else if (character.Equals('.'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.CONCATENATION_SIGN);
+                return true;
+            }
+            else if (character.Equals('|'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.DISJUNCTION_SIGN);
+                return true;
+            }
+            else if (character.Equals('?'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.QUESTION_MARK_SIGN);
+                return true;
+            }
+            else if (character.Equals('*'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.ASTERISK_SIGN);
+                return true;
+            }
+            else if (character.Equals('+'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.PLUS_SIGN);
+                return true;
+            }
+            else if (character.Equals('~'))
+            {
+                auxiliary += character;
+                addToken(Token.Type.SET_SIGN);
+                return true;
+            }
+            else
+            {
+                for (int i = 35; i <= 125; i++)
+                {
+                    if (!char.IsDigit(i) && !char.IsLetter(i))
+                    {
+                        if ((int)character == i)
+                        {
+                            auxiliary += character;
+                            addToken(Token.Type.SYMBOL);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void addWordReserved()
+        {
+            if (auxiliary.Equals("CONJ", StringComparison.InvariantCultureIgnoreCase))
+            {
+                addToken(Token.Type.RESERVED_CONJ);
+            }
+            else
+            {
+                addToken(Token.Type.ID);
+            }
+        }
+
+        private void addToken(Token.Type type)
+        {
+            idToken++;
+            ListToken.Add(new Token(idToken, row, column - auxiliary.Length, type, auxiliary));
+            auxiliary = "";
+            state = 0;
+        }
+
+        private void addError(String chain)
+        {
+            idError++;
+            ListError.Add(new Error(idError, row, column, chain, "Unknown pattern"));
+        }
+    }
+}
