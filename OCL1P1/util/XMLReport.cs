@@ -1,6 +1,7 @@
 ﻿using OCL1P1.model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,10 +18,11 @@ namespace OCL1P1.util
         {
         }
 
-        public void generateReport(string filename, List<Token> listTokens)
+        public void ReportToken(List<Token> listTokens)
         {
             /* fileStream = null;
             streamWriter = null; */
+            String filename = "Tokens.xml";
             fileStream = new FileStream(filename, FileMode.Create);
             streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
 
@@ -33,17 +35,19 @@ namespace OCL1P1.util
                 streamWriter.WriteLine("\t\t<Valor>" + item.Value + "</Valor>");
                 streamWriter.WriteLine("\t\t<Fila>" + item.Row + "</Fila>");
                 streamWriter.WriteLine("\t\t<Columna>" + item.Column + "</Columna>");
-                streamWriter.WriteLine("<\t/Token>");
+                streamWriter.WriteLine("\t</Token>");
             }
 
             streamWriter.WriteLine("</ListaTokens>");
             streamWriter.Close();
             fileStream.Close();
+            Process.Start(Directory.GetCurrentDirectory() + "\\Tokens.xml");
         }
 
-        public void generateReport(string filename, List<Error> listError)
+        public void ReportError(List<Error> listError)
         {
             // streamWriter = null;
+            String filename = "Errors.xml";
             fileStream = new FileStream(filename, FileMode.Create);
             streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
             streamWriter.WriteLine("<ListaErrores>");
@@ -60,6 +64,7 @@ namespace OCL1P1.util
             streamWriter.WriteLine("</ListaErrores>");
             streamWriter.Close();
             fileStream.Close();
+            Process.Start(Directory.GetCurrentDirectory() + "\\Errors.xml");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OCL1P1.analyzer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -127,6 +128,18 @@ namespace OCL1P1
                     }
                 }
             }
+        }
+
+        private void analyzeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RichTextBox richTextBox = tabControl1.SelectedTab.Controls.Cast<RichTextBox>().FirstOrDefault(x => x is RichTextBox);
+            string content = richTextBox.Text;
+
+            LexicalAnalyzer.Instance.Scanner(content);
+            LexicalAnalyzer.Instance.GenerateReports();
+
+            LexicalAnalyzer.Instance.ListToken.Clear();
+            LexicalAnalyzer.Instance.ListError.Clear();
         }
     }
 }

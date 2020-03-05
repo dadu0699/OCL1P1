@@ -1,4 +1,5 @@
 ﻿using OCL1P1.model;
+using OCL1P1.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +108,7 @@ namespace OCL1P1.analyzer
                             }
                         }
                         // Symbol
-                        else if (!AddSymbol(character))
+                        else if ((i < entry.Length - 1) && !AddSymbol(character))
                         {
                             if (character.Equals('#') && i == (entry.Length - 1))
                             {
@@ -116,7 +117,7 @@ namespace OCL1P1.analyzer
                             else
                             {
                                 Console.WriteLine("Lexical Error: Not Found '" + character + "' in defined patterns");
-                                addError(character.ToString());
+                                AddError(character.ToString());
                                 state = 0;
                             }
                         }
@@ -129,7 +130,7 @@ namespace OCL1P1.analyzer
                         }
                         else
                         {
-                            addWordReserved();
+                            AddWordReserved();
                             i--;
                         }
                         break;
@@ -141,7 +142,7 @@ namespace OCL1P1.analyzer
                         }
                         else
                         {
-                            addToken(Token.Type.NUMBER);
+                            AddToken(Token.Type.NUMBER);
                             i--;
                         }
                         break;
@@ -154,14 +155,14 @@ namespace OCL1P1.analyzer
                         else
                         {
                             auxiliary += character;
-                            addToken(Token.Type.STR);
+                            AddToken(Token.Type.STR);
                         }
                         break;
                     case 4:
                         if (character.Equals('>'))
                         {
                             auxiliary += character;
-                            addToken(Token.Type.ASSIGNMENT_SIGN);
+                            AddToken(Token.Type.ASSIGNMENT_SIGN);
                         }
                         else
                         {
@@ -190,7 +191,7 @@ namespace OCL1P1.analyzer
                         else
                         {
                             auxiliary += character;
-                            addToken(Token.Type.COMMENT);
+                            AddToken(Token.Type.COMMENT);
                         }
                         break;
                     case 7:
@@ -226,7 +227,7 @@ namespace OCL1P1.analyzer
                         else
                         {
                             auxiliary += character;
-                            addToken(Token.Type.MULTILINE_COMMENT);
+                            AddToken(Token.Type.MULTILINE_COMMENT);
                         }
                         break;
                 }
@@ -239,85 +240,85 @@ namespace OCL1P1.analyzer
             if (character.Equals('{'))
             {
                 auxiliary += character;
-                addToken(Token.Type.SYMBOL_LEFT_CURLY_BRACKET);
+                AddToken(Token.Type.SYMBOL_LEFT_CURLY_BRACKET);
                 return true;
             }
             else if (character.Equals('}'))
             {
                 auxiliary += character;
-                addToken(Token.Type.SYMBOL_RIGHT_CURLY_BRACKET);
+                AddToken(Token.Type.SYMBOL_RIGHT_CURLY_BRACKET);
                 return true;
             }
             else if (character.Equals(':'))
             {
                 auxiliary += character;
-                addToken(Token.Type.SYMBOL_COLON);
+                AddToken(Token.Type.SYMBOL_COLON);
                 return true;
             }
             else if (character.Equals(';'))
             {
                 auxiliary += character;
-                addToken(Token.Type.SYMBOL_SEMICOLON);
+                AddToken(Token.Type.SYMBOL_SEMICOLON);
                 return true;
             }
             else if (character.Equals(','))
             {
                 auxiliary += character;
-                addToken(Token.Type.SYMBOL_COMMA);
+                AddToken(Token.Type.SYMBOL_COMMA);
                 return true;
             }
             else if (character.Equals('%'))
             {
                 auxiliary += character;
-                addToken(Token.Type.PERCENT_SIGN);
+                AddToken(Token.Type.PERCENT_SIGN);
                 return true;
             }
             else if (character.Equals('.'))
             {
                 auxiliary += character;
-                addToken(Token.Type.CONCATENATION_SIGN);
+                AddToken(Token.Type.CONCATENATION_SIGN);
                 return true;
             }
             else if (character.Equals('|'))
             {
                 auxiliary += character;
-                addToken(Token.Type.DISJUNCTION_SIGN);
+                AddToken(Token.Type.DISJUNCTION_SIGN);
                 return true;
             }
             else if (character.Equals('?'))
             {
                 auxiliary += character;
-                addToken(Token.Type.QUESTION_MARK_SIGN);
+                AddToken(Token.Type.QUESTION_MARK_SIGN);
                 return true;
             }
             else if (character.Equals('*'))
             {
                 auxiliary += character;
-                addToken(Token.Type.ASTERISK_SIGN);
+                AddToken(Token.Type.ASTERISK_SIGN);
                 return true;
             }
             else if (character.Equals('+'))
             {
                 auxiliary += character;
-                addToken(Token.Type.PLUS_SIGN);
+                AddToken(Token.Type.PLUS_SIGN);
                 return true;
             }
             else if (character.Equals('~'))
             {
                 auxiliary += character;
-                addToken(Token.Type.SET_SIGN);
+                AddToken(Token.Type.SET_SIGN);
                 return true;
             }
             else
             {
                 for (int i = 35; i <= 125; i++)
                 {
-                    if (!char.IsDigit(i) && !char.IsLetter(i))
+                    if (!char.IsDigit(Convert.ToChar(i)) && !char.IsLetter(Convert.ToChar(i)))
                     {
                         if ((int)character == i)
                         {
                             auxiliary += character;
-                            addToken(Token.Type.SYMBOL);
+                            AddToken(Token.Type.SYMBOL);
                             return true;
                         }
                     }
@@ -326,19 +327,19 @@ namespace OCL1P1.analyzer
             return false;
         }
 
-        private void addWordReserved()
+        private void AddWordReserved()
         {
             if (auxiliary.Equals("CONJ", StringComparison.InvariantCultureIgnoreCase))
             {
-                addToken(Token.Type.RESERVED_CONJ);
+                AddToken(Token.Type.RESERVED_CONJ);
             }
             else
             {
-                addToken(Token.Type.ID);
+                AddToken(Token.Type.ID);
             }
         }
 
-        private void addToken(Token.Type type)
+        private void AddToken(Token.Type type)
         {
             idToken++;
             ListToken.Add(new Token(idToken, row, column - auxiliary.Length, type, auxiliary));
@@ -346,10 +347,17 @@ namespace OCL1P1.analyzer
             state = 0;
         }
 
-        private void addError(String chain)
+        private void AddError(String chain)
         {
             idError++;
             ListError.Add(new Error(idError, row, column, chain, "Unknown pattern"));
+        }
+
+        public void GenerateReports()
+        {
+            XMLReport xmlReport = new XMLReport();
+            xmlReport.ReportToken(ListToken);
+            xmlReport.ReportError(ListError);
         }
     }
 }
