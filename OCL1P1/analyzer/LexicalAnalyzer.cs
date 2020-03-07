@@ -48,7 +48,7 @@ namespace OCL1P1.analyzer
 
 
 
-        public void Scanner(String entry)
+        public void Scanner(string entry)
         {
             char character;
             entry += "#";
