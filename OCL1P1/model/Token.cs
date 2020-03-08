@@ -29,7 +29,8 @@ namespace OCL1P1.model
             ID,
             NUMBER,
             STR, // " "
-            SYMBOL // ASCII 35 - 125
+            SYMBOL, // ASCII 35 - 125
+            END // END
         }
 
         private int idToken;

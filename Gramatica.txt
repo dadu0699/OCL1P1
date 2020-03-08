@@ -1,7 +1,12 @@
-INICIO -> DEFCONJ' EXPR'
+INICIO -> INST'  
 
-DEFCONJ' -> DEFCONJ DEFCONJ'
+INST' -> INST INST'
 		| ε
+			
+INST -> DEFCONJ
+		| EXPR
+		| T_Comment
+		| T_Multiline_Comment
 		
 DEFCONJ -> R_CONJ S_Dospuntos T_ID S_Asignacion ASIGCONJ S_PuntoComa
 
@@ -16,9 +21,6 @@ TIPOCONJ -> T_ID
 			| T_SIMBOLO
 
 EXPR -> T_ID OPTEXPR S_PuntoComa
-
-EXPR' -> EXPR EXPR'
-		| ε
 		
 OPTEXPR -> DEFEXPR
 		| VALEXPR

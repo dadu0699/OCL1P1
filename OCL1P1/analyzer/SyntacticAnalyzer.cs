@@ -1,4 +1,5 @@
 ﻿using OCL1P1.model;
+using OCL1P1.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace OCL1P1.analyzer
         public SyntacticAnalyzer(List<Token> listToken)
         {
             ListToken = listToken;
+            ListToken.Add(new Token(0, 0, 0, Token.Type.END, "END"));
             index = 0;
             preAnalysis = listToken[index];
             syntacticError = false;
@@ -30,39 +32,67 @@ namespace OCL1P1.analyzer
             Start();
         }
 
-        public void Start()
+        private void Start()
         {
-            DEFCONJP();
-            EXPRP();
+            INSTP();
         }
 
-        public void DEFCONJP()
+        private void INSTP()
+        {
+            if (preAnalysis.TypeToken == Token.Type.RESERVED_CONJ 
+                || preAnalysis.TypeToken == Token.Type.ID
+                || preAnalysis.TypeToken == Token.Type.COMMENT 
+                || preAnalysis.TypeToken == Token.Type.MULTILINE_COMMENT)
+            {
+                INST();
+                INSTP();
+            }
+        }
+
+        private void INST()
         {
             if (preAnalysis.TypeToken == Token.Type.RESERVED_CONJ)
             {
                 DEFCONJ();
-                DEFCONJP();
             }
-        }
-
-        public void DEFCONJ()
-        {
-            if (preAnalysis.TypeToken == Token.Type.RESERVED_CONJ)
+            else if (preAnalysis.TypeToken == Token.Type.ID)
             {
-                parea(Token.Type.RESERVED_CONJ);
-                parea(Token.Type.SYMBOL_COLON);
-                parea(Token.Type.ID);
-                parea(Token.Type.ASSIGNMENT_SIGN);
-                ASGMTCONJ();
-                parea(Token.Type.SYMBOL_SEMICOLON);
+                EXPR();
+            }
+            else if (preAnalysis.TypeToken == Token.Type.COMMENT)
+            {
+                Parser(Token.Type.COMMENT);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.MULTILINE_COMMENT)
+            {
+                Parser(Token.Type.MULTILINE_COMMENT);
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONJ'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'DEFINITION " +
+                    "| EXPRESSION | COMMENT | MULTILINE COMMENT'");
+                syntacticError = true;
             }
         }
 
-        public void ASGMTCONJ()
+        private void DEFCONJ()
+        {
+            if (preAnalysis.TypeToken == Token.Type.RESERVED_CONJ)
+            {
+                Parser(Token.Type.RESERVED_CONJ);
+                Parser(Token.Type.SYMBOL_COLON);
+                Parser(Token.Type.ID);
+                Parser(Token.Type.ASSIGNMENT_SIGN);
+                ASGMTCONJ();
+                Parser(Token.Type.SYMBOL_SEMICOLON);
+            }
+            else
+            {
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONJ'");
+            }
+        }
+
+        private void ASGMTCONJ()
         {
             if (preAnalysis.TypeToken == Token.Type.ID
                 || preAnalysis.TypeToken == Token.Type.NUMBER
@@ -73,101 +103,88 @@ namespace OCL1P1.analyzer
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID | Number | Symbol'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID | Number | Symbol'");
             }
         }
 
-        public void ASGMTCONJP()
+        private void ASGMTCONJP()
         {
             if (preAnalysis.TypeToken == Token.Type.SET_SIGN)
             {
-                parea(Token.Type.SET_SIGN);
+                Parser(Token.Type.SET_SIGN);
                 ASGMTCONJ();
             }
             else if (preAnalysis.TypeToken == Token.Type.SYMBOL_COMMA)
             {
-                parea(Token.Type.SYMBOL_COMMA);
+                Parser(Token.Type.SYMBOL_COMMA);
                 ASGMTCONJ();
             }
         }
 
-        public void TYPECONJ()
+        private void TYPECONJ()
         {
             if (preAnalysis.TypeToken == Token.Type.ID)
             {
-                parea(Token.Type.ID);
+                Parser(Token.Type.ID);
             }
             else if (preAnalysis.TypeToken == Token.Type.NUMBER)
             {
-                parea(Token.Type.NUMBER);
+                Parser(Token.Type.NUMBER);
             }
             else if (preAnalysis.TypeToken == Token.Type.SYMBOL)
             {
-                parea(Token.Type.SYMBOL);
+                Parser(Token.Type.SYMBOL);
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID | Number | Symbol'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID | Number | Symbol'");
             }
         }
 
-        public void EXPR()
+        private void EXPR()
         {
             if (preAnalysis.TypeToken == Token.Type.ID)
             {
-                parea(Token.Type.ID);
+                Parser(Token.Type.ID);
                 OPTEXPR();
-                parea(Token.Type.SYMBOL_SEMICOLON);
+                Parser(Token.Type.SYMBOL_SEMICOLON);
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
             }
         }
 
-        public void EXPRP()
-        {
-            if (preAnalysis.TypeToken == Token.Type.ID)
-            {
-                EXPR();
-                EXPRP();
-            }
-            else
-            {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
-            }
-        }
-
-        public void OPTEXPR()
+        private void OPTEXPR()
         {
             if (preAnalysis.TypeToken == Token.Type.ASSIGNMENT_SIGN)
             {
                 DEFEXPR();
             }
-            else if (preAnalysis.TypeToken == Token.Type.SYMBOL_SEMICOLON)
+            else if (preAnalysis.TypeToken == Token.Type.SYMBOL_COLON)
             {
                 VALEXPR();
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ASSIGNMENT SIGN | SYMBOL COLON'");
             }
         }
 
-        public void DEFEXPR()
+        private void DEFEXPR()
         {
             if (preAnalysis.TypeToken == Token.Type.ASSIGNMENT_SIGN)
             {
-                parea(Token.Type.ASSIGNMENT_SIGN);
+                Parser(Token.Type.ASSIGNMENT_SIGN);
                 STRUCEXPR();
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
             }
         }
 
-        public void STRUCEXPR()
+        private void STRUCEXPR()
         {
             if (preAnalysis.TypeToken == Token.Type.CONCATENATION_SIGN
                 || preAnalysis.TypeToken == Token.Type.DISJUNCTION_SIGN
@@ -182,13 +199,13 @@ namespace OCL1P1.analyzer
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONCATENATION SIGN " +
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONCATENATION SIGN " +
                     "| DISJUNCTION SIGN | QUESTION MARK SIGN | ASTERISK SIGN | PLUS SIGN | SYMBOL LEFT CURLY BRACKET " +
                     "| STRING'");
             }
         }
 
-        public void STRUCEXPRP()
+        private void STRUCEXPRP()
         {
             if (preAnalysis.TypeToken == Token.Type.CONCATENATION_SIGN
                 || preAnalysis.TypeToken == Token.Type.DISJUNCTION_SIGN
@@ -203,56 +220,60 @@ namespace OCL1P1.analyzer
             }
         }
 
-        public void SYMBEXPR()
+        private void SYMBEXPR()
         {
             if (preAnalysis.TypeToken == Token.Type.CONCATENATION_SIGN)
             {
-                parea(Token.Type.CONCATENATION_SIGN);
+                Parser(Token.Type.CONCATENATION_SIGN);
             }
             else if (preAnalysis.TypeToken == Token.Type.DISJUNCTION_SIGN)
             {
-                parea(Token.Type.DISJUNCTION_SIGN);
+                Parser(Token.Type.DISJUNCTION_SIGN);
             }
             else if (preAnalysis.TypeToken == Token.Type.QUESTION_MARK_SIGN)
             {
-                parea(Token.Type.QUESTION_MARK_SIGN);
+                Parser(Token.Type.QUESTION_MARK_SIGN);
             }
             else if (preAnalysis.TypeToken == Token.Type.ASTERISK_SIGN)
             {
-                parea(Token.Type.ASTERISK_SIGN);
+                Parser(Token.Type.ASTERISK_SIGN);
             }
             else if (preAnalysis.TypeToken == Token.Type.PLUS_SIGN)
             {
-                parea(Token.Type.PLUS_SIGN);
+                Parser(Token.Type.PLUS_SIGN);
             }
             else if (preAnalysis.TypeToken == Token.Type.SYMBOL_LEFT_CURLY_BRACKET)
             {
-                parea(Token.Type.SYMBOL_LEFT_CURLY_BRACKET);
-                parea(Token.Type.ID);
-                parea(Token.Type.SYMBOL_RIGHT_CURLY_BRACKET);
+                Parser(Token.Type.SYMBOL_LEFT_CURLY_BRACKET);
+                Parser(Token.Type.ID);
+                Parser(Token.Type.SYMBOL_RIGHT_CURLY_BRACKET);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.STR)
+            {
+                Parser(Token.Type.STR);
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONCATENATION SIGN " +
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONCATENATION SIGN " +
                     "| DISJUNCTION SIGN | QUESTION MARK SIGN | ASTERISK SIGN | PLUS SIGN | SYMBOL LEFT CURLY BRACKET " +
                     "| STRING'");
             }
         }
 
-        public void VALEXPR()
+        private void VALEXPR()
         {
             if (preAnalysis.TypeToken == Token.Type.SYMBOL_COLON)
             {
-                parea(Token.Type.SYMBOL_COLON);
-                parea(Token.Type.STR);
+                Parser(Token.Type.SYMBOL_COLON);
+                Parser(Token.Type.STR);
             }
             else
             {
-                addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
+                AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'ID'");
             }
         }
 
-        public void parea(Token.Type type)
+        private void Parser(Token.Type type)
         {
             if (syntacticError)
             {
@@ -268,7 +289,7 @@ namespace OCL1P1.analyzer
             }
             else
             {
-                if (index < ListToken.Count - 1)
+                if (preAnalysis.TypeToken != Token.Type.END)
                 {
                     if (preAnalysis.TypeToken == type)
                     {
@@ -277,18 +298,24 @@ namespace OCL1P1.analyzer
                     }
                     else
                     {
-                        addError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected '" + type + "'");
+                        AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected '" + type + "'");
                         syntacticError = true;
                     }
                 }
             }
         }
 
-        public void addError(int row, int column, string str, string description)
+        private void AddError(int row, int column, string str, string description)
         {
             idError++;
             ListError.Add(new Error(idError, row, column, str, description));
             syntacticError = true;
+        }
+
+        public void GenerateReports()
+        {
+            XMLReport xmlReport = new XMLReport();
+            xmlReport.ReportError("SyntacticErrors.xml", ListError);
         }
     }
 }

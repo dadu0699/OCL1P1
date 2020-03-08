@@ -138,6 +138,9 @@ namespace OCL1P1
             LexicalAnalyzer.Instance.Scanner(content);
             LexicalAnalyzer.Instance.GenerateReports();
 
+            SyntacticAnalyzer syntactic = new SyntacticAnalyzer(LexicalAnalyzer.Instance.ListToken);
+            syntactic.GenerateReports();
+
             LexicalAnalyzer.Instance.ListToken.Clear();
             LexicalAnalyzer.Instance.ListError.Clear();
         }
