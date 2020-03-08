@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="analyzer\LexicalAnalyzer.cs" />
+    <Compile Include="analyzer\SyntacticAnalyzer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

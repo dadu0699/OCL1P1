@@ -1,24 +1,29 @@
-INICIO -> DEFCONJ' DEFEXPR' VALEXPR'
+INICIO -> DEFCONJ' EXPR'
 
 DEFCONJ' -> DEFCONJ DEFCONJ'
 		| ε
 		
 DEFCONJ -> R_CONJ S_Dospuntos T_ID S_Asignacion ASIGCONJ S_PuntoComa
 
-TIPOCONJ -> T_ID
-			| T_NUM
-			| T_SIMBOLO
-
 ASIGCONJ -> TIPOCONJ ASIGCONJ'
 
 ASIGCONJ' -> T_~ ASIGCONJ
 			| T_Coma ASIGCONJ
 			| ε 
+			
+TIPOCONJ -> T_ID
+			| T_NUM
+			| T_SIMBOLO
 
-DEFEXPR -> T_ID S_Asignacion ESTRUCEXPR S_PuntoComa
+EXPR -> T_ID OPTEXPR S_PuntoComa
 
-DEFEXPR' -> DEFEXPR DEFEXPR'
+EXPR' -> EXPR EXPR'
 		| ε
+		
+OPTEXPR -> DEFEXPR
+		| VALEXPR
+
+DEFEXPR -> S_Asignacion ESTRUCEXPR
 		
 ESTRUCEXPR -> SIMBEXPR ESTRUCEXPR'
 
@@ -32,8 +37,5 @@ SIMBEXPR -> S_Concatenacion
 			| S_Suma
 			| S_Corchete_IZQ T_ID S_Corchete_DCHO
 			| T_STR
-
-VALEXPR' -> VALEXPR VALEXPR'
-			| ε
 			
-VALEXPR -> T_ID S_Dospuntos T_STR S_PuntoComa
+VALEXPR -> S_Dospuntos T_STR
