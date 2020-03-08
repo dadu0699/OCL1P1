@@ -30,7 +30,7 @@ namespace OCL1P1.util
             {
                 streamWriter.WriteLine("\t<Token>");
                 streamWriter.WriteLine("\t\t<Nombre>" + item.TypeToken + "</Nombre>");
-                streamWriter.WriteLine("\t\t<Valor>" + item.Value + "</Valor>");
+                streamWriter.WriteLine("\t\t<Valor>" + item.Value.Replace('\n',' ').Replace('\t', ' ') + "</Valor>");
                 streamWriter.WriteLine("\t\t<Fila>" + item.Row + "</Fila>");
                 streamWriter.WriteLine("\t\t<Columna>" + item.Column + "</Columna>");
                 streamWriter.WriteLine("\t</Token>");
@@ -44,7 +44,7 @@ namespace OCL1P1.util
 
         public void ReportError(List<Error> listError)
         {
-            String filename = "Tokens.xml";
+            String filename = "Error.xml";
             fileStream = new FileStream(filename, FileMode.Create);
             streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
             streamWriter.WriteLine("<ListaErrores>");
