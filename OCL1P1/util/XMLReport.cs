@@ -100,12 +100,12 @@ namespace OCL1P1.util
                 streamWriter.WriteLine("\t<Simbolo>");
                 streamWriter.WriteLine("\t\t<Tipo>" + item.Type + "</Tipo>");
                 streamWriter.WriteLine("\t\t<Nombre>" + item.Name + "</Nombre>");
-                streamWriter.WriteLine("\t\t<Valor>");
+                streamWriter.Write("\t\t<Valor>");
                 foreach (Token token in item.Value)
                 {
                     streamWriter.Write(token.Value);
                 }
-                streamWriter.Write("</Valor>");
+                streamWriter.WriteLine("</Valor>");
                 streamWriter.WriteLine("\t</Simbolo>");
             }
 
