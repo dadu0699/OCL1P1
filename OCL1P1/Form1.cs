@@ -141,6 +141,9 @@ namespace OCL1P1
             SyntacticAnalyzer syntactic = new SyntacticAnalyzer(LexicalAnalyzer.Instance.ListToken);
             syntactic.GenerateReports();
 
+            Interpreter interpreter = new Interpreter(LexicalAnalyzer.Instance.ListToken);
+            interpreter.GenerateReports();
+
             LexicalAnalyzer.Instance.ListToken.Clear();
             LexicalAnalyzer.Instance.ListError.Clear();
         }

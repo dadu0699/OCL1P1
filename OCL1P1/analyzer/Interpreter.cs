@@ -1,4 +1,5 @@
 ﻿using OCL1P1.model;
+using OCL1P1.util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -162,10 +163,6 @@ namespace OCL1P1.analyzer
         {
             if (preAnalysis.TypeToken == Token.Type.ID)
             {
-                string type = "EXPR";
-                string name = preAnalysis.Value;
-                AddSymbol(type, name, null);
-
                 Parser(Token.Type.ID);
                 OPTEXPR();
                 Parser(Token.Type.SYMBOL_SEMICOLON);
@@ -180,6 +177,10 @@ namespace OCL1P1.analyzer
         {
             if (preAnalysis.TypeToken == Token.Type.ASSIGNMENT_SIGN)
             {
+                string type = "EXPR";
+                string name = ListToken[index-1].Value;
+                AddSymbol(type, name, null);
+
                 DEFEXPR();
             }
             else if (preAnalysis.TypeToken == Token.Type.SYMBOL_COLON)
@@ -198,7 +199,7 @@ namespace OCL1P1.analyzer
             {
                 Symbol symbol = GetSymbol(ListToken[index - 1].Value);
                 Parser(Token.Type.ASSIGNMENT_SIGN);
-                symbol.Value.AddRange(STRUCEXPR());
+                symbol.Value = STRUCEXPR();
             }
             else
             {
@@ -363,6 +364,12 @@ namespace OCL1P1.analyzer
                 }
             }
             return null;
+        }
+
+        public void GenerateReports()
+        {
+            XMLReport xmlReport = new XMLReport();
+            xmlReport.ReportSymbolTable(SymbolTable);
         }
     }
 }

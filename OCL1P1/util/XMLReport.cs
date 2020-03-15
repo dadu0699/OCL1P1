@@ -26,7 +26,7 @@ namespace OCL1P1.util
 
             streamWriter.WriteLine("<ListaTokens>");
 
-            foreach (var item in listTokens)
+            foreach (Token item in listTokens)
             {
                 streamWriter.WriteLine("\t<Token>");
                 streamWriter.WriteLine("\t\t<Nombre>" + item.TypeToken + "</Nombre>");
@@ -42,14 +42,14 @@ namespace OCL1P1.util
             Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
         }
 
-        public void ReportError(List<Error> listError)
+        public void ReportLexicalErrors(List<Error> listError)
         {
-            String filename = "Error.xml";
+            string filename = "LexicalErrors.xml";
             fileStream = new FileStream(filename, FileMode.Create);
             streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
             streamWriter.WriteLine("<ListaErrores>");
 
-            foreach (var item in listError)
+            foreach (Error item in listError)
             {
                 streamWriter.WriteLine("\t<Error>");
                 streamWriter.WriteLine("\t\t<Valor>" + item.Character + "</Valor>");
@@ -64,13 +64,14 @@ namespace OCL1P1.util
             Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
         }
 
-        public void ReportError(string filename, List<Error> listError)
+        public void ReportSyntacticErrors(List<Error> listError)
         {
+            string filename = "SyntacticErrors.xml";
             fileStream = new FileStream(filename, FileMode.Create);
             streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
             streamWriter.WriteLine("<ListaErroresSintacticos>");
 
-            foreach (var item in listError)
+            foreach (Error item in listError)
             {
                 streamWriter.WriteLine("\t<Error>");
                 streamWriter.WriteLine("\t\t<Valor>" + item.Character + "</Valor>");
@@ -81,6 +82,34 @@ namespace OCL1P1.util
             }
 
             streamWriter.WriteLine("</ListaErroresSintacticos>");
+            streamWriter.Close();
+            fileStream.Close();
+            Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
+        }
+
+        public void ReportSymbolTable(List<Symbol> listSymbols)
+        {
+            string filename = "SymbolTable.xml";
+            fileStream = new FileStream(filename, FileMode.Create);
+            streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
+
+            streamWriter.WriteLine("<ListaSimbolos>");
+
+            foreach (Symbol item in listSymbols)
+            {
+                streamWriter.WriteLine("\t<Simbolo>");
+                streamWriter.WriteLine("\t\t<Tipo>" + item.Type + "</Tipo>");
+                streamWriter.WriteLine("\t\t<Nombre>" + item.Name + "</Nombre>");
+                streamWriter.WriteLine("\t\t<Valor>");
+                foreach (Token token in item.Value)
+                {
+                    streamWriter.Write(token.Value);
+                }
+                streamWriter.Write("</Valor>");
+                streamWriter.WriteLine("\t</Simbolo>");
+            }
+
+            streamWriter.WriteLine("</ListaSimbolos>");
             streamWriter.Close();
             fileStream.Close();
             Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);

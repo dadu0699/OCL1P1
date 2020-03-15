@@ -357,7 +357,7 @@ namespace OCL1P1.analyzer
         {
             XMLReport xmlReport = new XMLReport();
             xmlReport.ReportToken(ListToken);
-            xmlReport.ReportError(ListError);
+            xmlReport.LexicalErrors(ListError);
         }
     }
 }

@@ -315,7 +315,7 @@ namespace OCL1P1.analyzer
         public void GenerateReports()
         {
             XMLReport xmlReport = new XMLReport();
-            xmlReport.ReportError("SyntacticErrors.xml", ListError);
+            xmlReport.ReportSyntacticErrors(ListError);
         }
     }
 }
