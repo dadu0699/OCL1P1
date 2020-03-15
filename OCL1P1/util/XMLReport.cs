@@ -93,7 +93,7 @@ namespace OCL1P1.util
             fileStream = new FileStream(filename, FileMode.Create);
             streamWriter = new StreamWriter(fileStream, Encoding.UTF8);
 
-            streamWriter.WriteLine("<ListaSimbolos>");
+            streamWriter.WriteLine("<TablaDeSimbolos>");
 
             foreach (Symbol item in listSymbols)
             {
@@ -109,7 +109,7 @@ namespace OCL1P1.util
                 streamWriter.WriteLine("\t</Simbolo>");
             }
 
-            streamWriter.WriteLine("</ListaSimbolos>");
+            streamWriter.WriteLine("</TablaDeSimbolos>");
             streamWriter.Close();
             fileStream.Close();
             Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
