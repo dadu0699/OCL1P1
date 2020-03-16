@@ -46,8 +46,6 @@ namespace OCL1P1.analyzer
             }
         }
 
-
-
         public void Scanner(string entry)
         {
             char character;
@@ -190,7 +188,8 @@ namespace OCL1P1.analyzer
                         }
                         else
                         {
-                            AddSymbol(auxiliary.ElementAt(0));
+                            auxiliary = "";
+                            AddSymbol('/');
                             i--;
                         }
                         break;
