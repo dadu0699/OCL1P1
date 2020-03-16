@@ -104,7 +104,12 @@ namespace OCL1P1.analyzer
             List<Token> tokens = new List<Token>();
             if (preAnalysis.TypeToken == Token.Type.ID
                 || preAnalysis.TypeToken == Token.Type.NUMBER
-                || preAnalysis.TypeToken == Token.Type.SYMBOL)
+                || preAnalysis.TypeToken == Token.Type.SYMBOL
+                || preAnalysis.TypeToken == Token.Type.LINE_BREAK
+                || preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.TABULATION
+                || preAnalysis.TypeToken == Token.Type.CHARACTER_SET)
             {
                 tokens.Add(TYPECONJ());
                 tokens.AddRange(ASGMTCONJP());
@@ -151,6 +156,31 @@ namespace OCL1P1.analyzer
             {
                 token = preAnalysis;
                 Parser(Token.Type.SYMBOL);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.LINE_BREAK)
+            {
+                token = preAnalysis;
+                Parser(Token.Type.LINE_BREAK);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE)
+            {
+                token = preAnalysis;
+                Parser(Token.Type.SINGLE_QUOTE);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE)
+            {
+                token = preAnalysis;
+                Parser(Token.Type.DOUBLE_QUOTE);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.TABULATION)
+            {
+                token = preAnalysis;
+                Parser(Token.Type.TABULATION);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.CHARACTER_SET)
+            {
+                token = preAnalysis;
+                Parser(Token.Type.CHARACTER_SET);
             }
             else
             {
@@ -200,6 +230,7 @@ namespace OCL1P1.analyzer
                 Symbol symbol = GetSymbol(ListToken[index - 1].Value);
                 Parser(Token.Type.ASSIGNMENT_SIGN);
                 symbol.Value = STRUCEXPR();
+
             }
             else
             {

@@ -96,7 +96,12 @@ namespace OCL1P1.analyzer
         {
             if (preAnalysis.TypeToken == Token.Type.ID
                 || preAnalysis.TypeToken == Token.Type.NUMBER
-                || preAnalysis.TypeToken == Token.Type.SYMBOL)
+                || preAnalysis.TypeToken == Token.Type.SYMBOL
+                || preAnalysis.TypeToken == Token.Type.LINE_BREAK
+                || preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.TABULATION
+                || preAnalysis.TypeToken == Token.Type.CHARACTER_SET)
             {
                 TYPECONJ();
                 ASGMTCONJP();
@@ -134,6 +139,26 @@ namespace OCL1P1.analyzer
             else if (preAnalysis.TypeToken == Token.Type.SYMBOL)
             {
                 Parser(Token.Type.SYMBOL);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.LINE_BREAK)
+            {
+                Parser(Token.Type.LINE_BREAK);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE)
+            {
+                Parser(Token.Type.SINGLE_QUOTE);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE)
+            {
+                Parser(Token.Type.DOUBLE_QUOTE);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.TABULATION)
+            {
+                Parser(Token.Type.TABULATION);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.CHARACTER_SET)
+            {
+                Parser(Token.Type.CHARACTER_SET);
             }
             else
             {
