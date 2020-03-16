@@ -26,6 +26,11 @@ namespace OCL1P1.model
             ASSIGNMENT_SIGN, // ->
             COMMENT, // //
             MULTILINE_COMMENT, // <!!>
+            LINE_BREAK, // \n
+            SINGLE_QUOTE, // \'
+            DOUBLE_QUOTE, // \"
+            TABULATION, // \t
+            CHARACTER_SET, // [::]
             ID,
             NUMBER,
             STR, // " "
@@ -82,6 +87,16 @@ namespace OCL1P1.model
                         return "COMMENT"; // //
                     case Type.MULTILINE_COMMENT:
                         return "MULTILINE COMMENT"; // <!!>
+                    case Type.LINE_BREAK:
+                        return "LINE BREAK"; // \n
+                    case Type.SINGLE_QUOTE:
+                        return "SINGLE QUOTE"; // \'
+                    case Type.DOUBLE_QUOTE:
+                        return "DOUBLE QUOTE"; // \""
+                    case Type.TABULATION:
+                        return "TABULATION"; // \t
+                    case Type.CHARACTER_SET:
+                        return "CHARACTER SET"; // [::]
                     case Type.ID:
                         return "ID";
                     case Type.NUMBER:

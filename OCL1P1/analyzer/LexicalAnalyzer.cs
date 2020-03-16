@@ -95,6 +95,18 @@ namespace OCL1P1.analyzer
                             state = 7;
                             auxiliary += character;
                         }
+                        // Special Character
+                        else if (character.Equals('\\'))
+                        {
+                            state = 10;
+                            auxiliary += character;
+                        }
+                        // Character Set
+                        else if (character.Equals('['))
+                        {
+                            state = 11;
+                            auxiliary += character;
+                        }
                         // Blanks and line breaks
                         else if (char.IsWhiteSpace(character))
                         {
@@ -202,7 +214,8 @@ namespace OCL1P1.analyzer
                         }
                         else
                         {
-                            AddSymbol(auxiliary.ElementAt(0));
+                            auxiliary = "";
+                            AddSymbol('<');
                             i--;
                         }
                         break;
@@ -228,6 +241,71 @@ namespace OCL1P1.analyzer
                         {
                             auxiliary += character;
                             AddToken(Token.Type.MULTILINE_COMMENT);
+                        }
+                        break;
+                    case 10:
+                        if (character.Equals('n'))
+                        {
+                            auxiliary += character;
+                            AddToken(Token.Type.LINE_BREAK);
+                        }
+                        else if (character.Equals('\''))
+                        {
+                            auxiliary += character;
+                            AddToken(Token.Type.SINGLE_QUOTE);
+                        }
+                        else if (character.Equals('\"'))
+                        {
+                            auxiliary += character;
+                            AddToken(Token.Type.DOUBLE_QUOTE);
+                        }
+                        else if (character.Equals('t'))
+                        {
+                            auxiliary += character;
+                            AddToken(Token.Type.TABULATION);
+                        }
+                        else
+                        {
+                            auxiliary = "";
+                            AddSymbol('\\');
+                            i--;
+                        }
+                        break;
+                    case 11:
+                        if (character.Equals(':'))
+                        {
+                            state = 12;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            auxiliary = "";
+                            AddSymbol('[');
+                            i--;
+                        }
+                        break;
+                    case 12:
+                        if (!character.Equals(':'))
+                        {
+                            state = 12;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            state = 13;
+                            auxiliary += character;
+                        }
+                        break;
+                    case 13:
+                        if (!character.Equals(']'))
+                        {
+                            state = 12;
+                            auxiliary += character;
+                        }
+                        else
+                        {
+                            auxiliary += character;
+                            AddToken(Token.Type.CHARACTER_SET);
                         }
                         break;
                 }
