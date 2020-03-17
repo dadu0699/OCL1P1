@@ -430,10 +430,15 @@ namespace OCL1P1.analyzer
             ListError.Add(new Error(idError, row, column, chain, "Unknown pattern"));
         }
 
-        public void GenerateReports()
+        public void GenerateReportToken()
         {
             XMLReport xmlReport = new XMLReport();
             xmlReport.ReportToken(ListToken);
+        }
+
+        public void GenerateReportLexicalErrors()
+        {
+            XMLReport xmlReport = new XMLReport();
             xmlReport.ReportLexicalErrors(ListError);
         }
     }

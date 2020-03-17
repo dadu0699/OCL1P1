@@ -15,6 +15,8 @@ namespace OCL1P1
     public partial class Form1 : Form
     {
         private int countTab;
+        private SyntacticAnalyzer syntacticAnalyzer;
+        private Interpreter interpreter;
 
         public Form1()
         {
@@ -136,21 +138,26 @@ namespace OCL1P1
             string content = richTextBox.Text;
 
             LexicalAnalyzer.Instance.Scanner(content);
-            LexicalAnalyzer.Instance.GenerateReports();
 
             if (LexicalAnalyzer.Instance.ListError.Count() == 0)
             {
-                SyntacticAnalyzer syntacticAnalyzer = new SyntacticAnalyzer(LexicalAnalyzer.Instance.ListToken);
-                syntacticAnalyzer.GenerateReports();
+                syntacticAnalyzer = new SyntacticAnalyzer(LexicalAnalyzer.Instance.ListToken);
                 if (syntacticAnalyzer.ListError.Count() == 0)
                 {
-                    Interpreter interpreter = new Interpreter(LexicalAnalyzer.Instance.ListToken);
+                    interpreter = new Interpreter(LexicalAnalyzer.Instance.ListToken);
                     interpreter.GenerateReports();
                 }
             }
+        }
 
-            LexicalAnalyzer.Instance.ListToken.Clear();
-            LexicalAnalyzer.Instance.ListError.Clear();
+        private void saveTokensToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LexicalAnalyzer.Instance.GenerateReportToken();
+        }
+
+        private void saveErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LexicalAnalyzer.Instance.GenerateReportLexicalErrors();
         }
     }
 }

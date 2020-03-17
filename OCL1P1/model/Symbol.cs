@@ -15,10 +15,10 @@ namespace OCL1P1.model
 
         public Symbol(int idSymbol, string type, string name, List<Token> value)
         {
-            this.idSymbol = idSymbol;
-            this.type = type;
-            this.name = name;
-            this.value = value;
+            this.IdSymbol = idSymbol;
+            this.Type = type;
+            this.Name = name;
+            this.Value = value;
         }
 
         public int IdSymbol { get => idSymbol; set => idSymbol = value; }

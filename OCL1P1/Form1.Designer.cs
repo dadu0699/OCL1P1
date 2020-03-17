@@ -34,6 +34,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.herramientasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.analyzeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarThompsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveTokensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +54,6 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.commandLineTextBox = new System.Windows.Forms.RichTextBox();
-            this.analyzeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -124,6 +124,14 @@
             this.herramientasToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
             this.herramientasToolStripMenuItem.Text = "Herramientas";
             // 
+            // analyzeToolStripMenuItem
+            // 
+            this.analyzeToolStripMenuItem.Name = "analyzeToolStripMenuItem";
+            this.analyzeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.analyzeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.analyzeToolStripMenuItem.Text = "Analizar";
+            this.analyzeToolStripMenuItem.Click += new System.EventHandler(this.analyzeToolStripMenuItem_Click);
+            // 
             // cargarThompsonToolStripMenuItem
             // 
             this.cargarThompsonToolStripMenuItem.Name = "cargarThompsonToolStripMenuItem";
@@ -135,12 +143,14 @@
             this.saveTokensToolStripMenuItem.Name = "saveTokensToolStripMenuItem";
             this.saveTokensToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveTokensToolStripMenuItem.Text = "Guardar Tokens";
+            this.saveTokensToolStripMenuItem.Click += new System.EventHandler(this.saveTokensToolStripMenuItem_Click);
             // 
             // saveErrorsToolStripMenuItem
             // 
             this.saveErrorsToolStripMenuItem.Name = "saveErrorsToolStripMenuItem";
             this.saveErrorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveErrorsToolStripMenuItem.Text = "Guardar Errores";
+            this.saveErrorsToolStripMenuItem.Click += new System.EventHandler(this.saveErrorsToolStripMenuItem_Click);
             // 
             // reportesToolStripMenuItem
             // 
@@ -153,7 +163,7 @@
             // errorLéxicoToolStripMenuItem
             // 
             this.errorLéxicoToolStripMenuItem.Name = "errorLéxicoToolStripMenuItem";
-            this.errorLéxicoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorLéxicoToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.errorLéxicoToolStripMenuItem.Text = "Error léxico";
             // 
             // panel2
@@ -321,14 +331,6 @@
             this.commandLineTextBox.Size = new System.Drawing.Size(495, 111);
             this.commandLineTextBox.TabIndex = 2;
             this.commandLineTextBox.Text = "";
-            // 
-            // analyzeToolStripMenuItem
-            // 
-            this.analyzeToolStripMenuItem.Name = "analyzeToolStripMenuItem";
-            this.analyzeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.analyzeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.analyzeToolStripMenuItem.Text = "Analizar";
-            this.analyzeToolStripMenuItem.Click += new System.EventHandler(this.analyzeToolStripMenuItem_Click);
             // 
             // Form1
             // 

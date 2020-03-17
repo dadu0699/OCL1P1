@@ -116,7 +116,7 @@ namespace OCL1P1.model
             this.IdToken = idToken;
             this.Row = row;
             this.Column = column;
-            this.typeToken = typeToken;
+            this.TypeToken = typeToken;
             this.Value = value;
         }
     }

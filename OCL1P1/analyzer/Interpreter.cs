@@ -1,4 +1,5 @@
-﻿using OCL1P1.model;
+﻿using OCL1P1.controller;
+using OCL1P1.model;
 using OCL1P1.util;
 using System;
 using System.Collections.Generic;
@@ -230,7 +231,10 @@ namespace OCL1P1.analyzer
                 Symbol symbol = GetSymbol(ListToken[index - 1].Value);
                 Parser(Token.Type.ASSIGNMENT_SIGN);
                 symbol.Value = STRUCEXPR();
-
+                // Thompson's construction
+                NFA nfa = new NFA(symbol);
+                NFAReport nfaReport = new NFAReport();
+                nfaReport.ReportNFA(symbol.Name, nfa.Thompson());
             }
             else
             {

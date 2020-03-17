@@ -49,6 +49,7 @@
     <Compile Include="analyzer\Interpreter.cs" />
     <Compile Include="analyzer\LexicalAnalyzer.cs" />
     <Compile Include="analyzer\SyntacticAnalyzer.cs" />
+    <Compile Include="controller\NFA.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,10 +57,13 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="model\Error.cs" />
+    <Compile Include="model\State.cs" />
     <Compile Include="model\Symbol.cs" />
     <Compile Include="model\Token.cs" />
+    <Compile Include="model\Transition.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\NFAReport.cs" />
     <Compile Include="util\XMLReport.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

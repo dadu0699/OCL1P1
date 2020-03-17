@@ -30,7 +30,7 @@ namespace OCL1P1.util
             {
                 streamWriter.WriteLine("\t<Token>");
                 streamWriter.WriteLine("\t\t<Nombre>" + item.TypeToken + "</Nombre>");
-                streamWriter.WriteLine("\t\t<Valor>" + item.Value.Replace('\n',' ').Replace('\t', ' ') + "</Valor>");
+                streamWriter.WriteLine("\t\t<Valor>" + item.Value.Replace('\n', ' ').Replace('\t', ' ') + "</Valor>");
                 streamWriter.WriteLine("\t\t<Fila>" + item.Row + "</Fila>");
                 streamWriter.WriteLine("\t\t<Columna>" + item.Column + "</Columna>");
                 streamWriter.WriteLine("\t</Token>");
@@ -39,7 +39,7 @@ namespace OCL1P1.util
             streamWriter.WriteLine("</ListaTokens>");
             streamWriter.Close();
             fileStream.Close();
-            Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
+            OpenReport(filename);
         }
 
         public void ReportLexicalErrors(List<Error> listError)
@@ -61,7 +61,7 @@ namespace OCL1P1.util
             streamWriter.WriteLine("</ListaErrores>");
             streamWriter.Close();
             fileStream.Close();
-            Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
+            OpenReport(filename);
         }
 
         public void ReportSyntacticErrors(List<Error> listError)
@@ -84,7 +84,7 @@ namespace OCL1P1.util
             streamWriter.WriteLine("</ListaErroresSintacticos>");
             streamWriter.Close();
             fileStream.Close();
-            Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
+            OpenReport(filename);
         }
 
         public void ReportSymbolTable(List<Symbol> listSymbols)
@@ -112,7 +112,15 @@ namespace OCL1P1.util
             streamWriter.WriteLine("</TablaDeSimbolos>");
             streamWriter.Close();
             fileStream.Close();
-            Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
+            OpenReport(filename);
+        }
+
+        private void OpenReport(string filename)
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + "\\" + filename))
+            {
+                Process.Start(Directory.GetCurrentDirectory() + "\\" + filename);
+            }
         }
     }
 }
