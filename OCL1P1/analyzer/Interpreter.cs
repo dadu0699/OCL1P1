@@ -236,8 +236,9 @@ namespace OCL1P1.analyzer
                 // Thompson's construction
                 Thompson nfa = new Thompson(symbol);
                 NFAReport nfaReport = new NFAReport();
-                // nfaReport.ReportNFA(symbol.Name, nfa.Construction());
                 nfa.Construction();
+                nfaReport.ReportNFA(symbol.Name, nfa.Transitions);
+                
                 foreach (Transition item in nfa.Transitions)
                 {
                     if (item.From != null)
@@ -269,6 +270,7 @@ namespace OCL1P1.analyzer
                         Console.WriteLine("[label=\"&epsilon;\"];");
                     }
                 }
+
             }
             else
             {

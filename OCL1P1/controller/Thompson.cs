@@ -12,7 +12,8 @@ namespace OCL1P1.controller
         private Symbol symbol;
         private List<Token> tokens;
         private List<Transition> transitions;
-        private int index;
+        private int indexToken;
+        private int indexState;
 
         public Thompson(Symbol symbol)
         {
@@ -21,15 +22,16 @@ namespace OCL1P1.controller
 
             this.symbol = symbol;
             tokens.AddRange(symbol.Value);
-            index = 0;
+            indexToken = 0;
+            indexState = 0;
         }
 
         internal List<Transition> Transitions { get => transitions; set => transitions = value; }
 
         public NFA Construction()
         {
-            Token token = tokens.ElementAt(index);
-            State rootState = new State(index.ToString());
+            Token token = tokens.ElementAt(indexToken);
+            State rootState = new State(indexState.ToString());
             Transition rootTransition = new Transition(null, null, rootState);
             NFA rootNFA = new NFA(rootTransition, rootTransition);
             transitions.Add(rootTransition);
@@ -37,10 +39,12 @@ namespace OCL1P1.controller
             switch (token.TypeToken)
             {
                 case Token.Type.CONCATENATION_SIGN:
-                    index++;
+                    indexToken++;
+                    indexState++;
                     NFA n1C = Construction();
 
-                    index++;
+                    indexToken++;
+                    indexState++;
                     NFA n2C = Construction();
 
                     n1C.Initial.From = rootNFA.Acceptance.To;
@@ -51,6 +55,35 @@ namespace OCL1P1.controller
                     rootNFA.Acceptance = n2C.Acceptance;
                     break;
                 case Token.Type.DISJUNCTION_SIGN:
+                    indexState++;
+                    State s1D = new State(indexState.ToString());
+                    Transition t1D = new Transition(rootState, null, s1D);
+                    transitions.Add(t1D);
+
+                    indexToken++;
+                    indexState++;
+                    NFA n2D = Construction();
+                    n2D.Initial.From = t1D.To;
+
+                    indexState++;
+                    State s3D = new State(indexState.ToString());
+                    Transition t3D = new Transition(rootState, null, s3D);
+                    transitions.Add(t3D);
+
+                    indexToken++;
+                    indexState++;
+                    NFA n4D = Construction();
+                    n4D.Initial.From = t3D.To;
+
+                    indexState++;
+                    State s5D = new State(indexState.ToString());
+                    Transition t25D = new Transition(n2D.Acceptance.To, null, s5D);
+                    transitions.Add(t25D);
+                    Transition t45D = new Transition(n4D.Acceptance.To, null, s5D);
+                    transitions.Add(t45D);
+
+                    rootNFA.Initial = t1D;
+                    rootNFA.Acceptance = t45D;
                     break;
                 case Token.Type.QUESTION_MARK_SIGN:
                     break;

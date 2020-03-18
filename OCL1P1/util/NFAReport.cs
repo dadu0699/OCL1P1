@@ -34,7 +34,7 @@ namespace OCL1P1.util
             process.WaitForExit();
         }
 
-        public void ReportNFA(string name, Transition transition)
+        public void ReportNFA(string name, List<Transition> transitions)
         {
             this.graph = new StringBuilder();
             string rdot = route + "\\" + name.Replace(" ", "") + ".dot";
@@ -44,24 +44,37 @@ namespace OCL1P1.util
             this.graph.Append("\n\tgraph [rankdir = LR]");
             this.graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
-            /*foreach (var item in transition.State.EpsilonTransitions)
+            foreach (Transition item in transitions)
             {
-                this.graph.Append("\n\t" + transition.State.StateName + "->" + item.StateName 
-                    + "[label=\"&epsilon\"];");
-            }
-
-            foreach (var item in transition.State.Transitions)
-            {
-                this.graph.Append("\n\t" + transition.State.StateName + "->" + item.State.StateName);
-                if (item.Token != null)
+                if (item.From != null)
                 {
-                    this.graph.Append("[label=\"" + item.Token.Value + "\"];");
+                    this.graph.Append("\t" + item.From.StateName);
                 }
                 else
                 {
-                    this.graph.Append("[label=\"&epsilon;\"];");
+                    this.graph.Append("\t\"\"[shape = none]");
+                    this.graph.Append("\n\t\"\"");
                 }
-            }*/
+
+                if (item.To != null)
+                {
+                    this.graph.Append("->" + item.To.StateName);
+                }
+                else
+                {
+
+                    this.graph.Append("-> \"\"");
+                }
+
+                if (item.Token != null)
+                {
+                    this.graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
+                }
+                else
+                {
+                    this.graph.AppendLine("[label=\"&epsilon;\"];");
+                }
+            }
 
             this.graph.Append("\n}");
             generateDotPNG(rdot, rpng);
