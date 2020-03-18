@@ -8,16 +8,19 @@ namespace OCL1P1.model
 {
     class Transition
     {
-        private State state;
+        private State from;
         private Token token;
+        private State to;
 
-        public Transition(State state, Token token)
+        public Transition(State from, Token token, State to)
         {
-            this.State = state;
+            this.From = from;
             this.Token = token;
+            this.To = to;
         }
 
-        internal State State { get => state; set => state = value; }
+        internal State From { get => from; set => from = value; }
         internal Token Token { get => token; set => token = value; }
+        internal State To { get => to; set => to = value; }
     }
 }

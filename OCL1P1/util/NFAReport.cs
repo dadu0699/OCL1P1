@@ -44,7 +44,7 @@ namespace OCL1P1.util
             this.graph.Append("\n\tgraph [rankdir = LR]");
             this.graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
-            foreach (var item in transition.State.EpsilonTransitions)
+            /*foreach (var item in transition.State.EpsilonTransitions)
             {
                 this.graph.Append("\n\t" + transition.State.StateName + "->" + item.StateName 
                     + "[label=\"&epsilon\"];");
@@ -52,9 +52,16 @@ namespace OCL1P1.util
 
             foreach (var item in transition.State.Transitions)
             {
-                this.graph.Append("\n\t" + transition.State.StateName + "->" + item.State.StateName 
-                    + "[label=\""+ item.Token.Value + "\"];");
-            }
+                this.graph.Append("\n\t" + transition.State.StateName + "->" + item.State.StateName);
+                if (item.Token != null)
+                {
+                    this.graph.Append("[label=\"" + item.Token.Value + "\"];");
+                }
+                else
+                {
+                    this.graph.Append("[label=\"&epsilon;\"];");
+                }
+            }*/
 
             this.graph.Append("\n}");
             generateDotPNG(rdot, rpng);

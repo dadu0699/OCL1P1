@@ -10,20 +10,14 @@ namespace OCL1P1.model
     {
         private string stateName;
         private bool isEnd;
-        private List<Transition> transitions;
-        private List<State> epsilonTransitions;
 
-        public State(string stateName, bool isEnd, List<Transition> transition, List<State> epsilonTransitions)
+        public State(string stateName)
         {
-            this.stateName = stateName;
-            this.isEnd = isEnd;
-            this.transitions = transition;
-            this.epsilonTransitions = epsilonTransitions;
+            this.StateName = stateName;
+            IsEnd = false;
         }
 
         public string StateName { get => stateName; set => stateName = value; }
         public bool IsEnd { get => isEnd; set => isEnd = value; }
-        internal List<Transition> Transitions { get => transitions; set => transitions = value; }
-        internal List<State> EpsilonTransitions { get => epsilonTransitions; set => epsilonTransitions = value; }
     }
 }

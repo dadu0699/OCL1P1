@@ -20,7 +20,8 @@ namespace OCL1P1.analyzer
 
         public SyntacticAnalyzer(List<Token> listToken)
         {
-            ListToken = listToken;
+            ListToken = new List<Token>();
+            ListToken.AddRange(listToken);
             ListToken.Add(new Token(0, 0, 0, Token.Type.END, "END"));
             index = 0;
             preAnalysis = ListToken[index];

@@ -10,7 +10,6 @@ namespace OCL1P1.analyzer
 {
     class LexicalAnalyzer
     {
-        private static LexicalAnalyzer instance;
         private string auxiliary;
         private int state;
         private int idToken;
@@ -32,18 +31,6 @@ namespace OCL1P1.analyzer
 
             ListToken = new List<Token>();
             ListError = new List<Error>();
-        }
-
-        public static LexicalAnalyzer Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new LexicalAnalyzer();
-                }
-                return instance;
-            }
         }
 
         public void Scanner(string entry)

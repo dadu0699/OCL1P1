@@ -23,7 +23,8 @@ namespace OCL1P1.analyzer
 
         public Interpreter(List<Token> listToken)
         {
-            ListToken = listToken;
+            ListToken = new List<Token>();
+            ListToken.AddRange(listToken);
             ListToken.Add(new Token(0, 0, 0, Token.Type.END, "END"));
             index = 0;
             preAnalysis = ListToken[index];
@@ -209,7 +210,7 @@ namespace OCL1P1.analyzer
             if (preAnalysis.TypeToken == Token.Type.ASSIGNMENT_SIGN)
             {
                 string type = "EXPR";
-                string name = ListToken[index-1].Value;
+                string name = ListToken[index - 1].Value;
                 AddSymbol(type, name, null);
 
                 DEFEXPR();
@@ -231,10 +232,43 @@ namespace OCL1P1.analyzer
                 Symbol symbol = GetSymbol(ListToken[index - 1].Value);
                 Parser(Token.Type.ASSIGNMENT_SIGN);
                 symbol.Value = STRUCEXPR();
+
                 // Thompson's construction
-                NFA nfa = new NFA(symbol);
+                Thompson nfa = new Thompson(symbol);
                 NFAReport nfaReport = new NFAReport();
-                nfaReport.ReportNFA(symbol.Name, nfa.Thompson());
+                // nfaReport.ReportNFA(symbol.Name, nfa.Construction());
+                nfa.Construction();
+                foreach (Transition item in nfa.Transitions)
+                {
+                    if (item.From != null)
+                    {
+                        Console.Write("\t" + item.From.StateName);
+                    }
+                    else
+                    {
+                        Console.Write("\t\"\"[shape = none]");
+                        Console.Write("\n\t\"\"");
+                    }
+
+                    if (item.To != null)
+                    {
+                        Console.Write("->" + item.To.StateName);
+                    }
+                    else
+                    {
+
+                        Console.Write("-> \"\"");
+                    }
+
+                    if (item.Token != null)
+                    {
+                        Console.WriteLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
+                    }
+                    else
+                    {
+                        Console.WriteLine("[label=\"&epsilon;\"];");
+                    }
+                }
             }
             else
             {

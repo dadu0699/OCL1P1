@@ -15,6 +15,7 @@ namespace OCL1P1
     public partial class Form1 : Form
     {
         private int countTab;
+        private LexicalAnalyzer lexicalAnalyzer;
         private SyntacticAnalyzer syntacticAnalyzer;
         private Interpreter interpreter;
 
@@ -137,27 +138,34 @@ namespace OCL1P1
             RichTextBox richTextBox = tabControl1.SelectedTab.Controls.Cast<RichTextBox>().FirstOrDefault(x => x is RichTextBox);
             string content = richTextBox.Text;
 
-            LexicalAnalyzer.Instance.Scanner(content);
+            lexicalAnalyzer = new LexicalAnalyzer();
+            lexicalAnalyzer.Scanner(content);
 
-            if (LexicalAnalyzer.Instance.ListError.Count() == 0)
+            if (lexicalAnalyzer.ListError.Count() == 0)
             {
-                syntacticAnalyzer = new SyntacticAnalyzer(LexicalAnalyzer.Instance.ListToken);
+                syntacticAnalyzer = new SyntacticAnalyzer(lexicalAnalyzer.ListToken);
                 if (syntacticAnalyzer.ListError.Count() == 0)
                 {
-                    interpreter = new Interpreter(LexicalAnalyzer.Instance.ListToken);
-                    interpreter.GenerateReports();
+                    interpreter = new Interpreter(lexicalAnalyzer.ListToken);
+                    // interpreter.GenerateReports();
                 }
             }
         }
 
         private void saveTokensToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LexicalAnalyzer.Instance.GenerateReportToken();
+            if (lexicalAnalyzer != null)
+            {
+                lexicalAnalyzer.GenerateReportToken();
+            }
         }
 
         private void saveErrorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LexicalAnalyzer.Instance.GenerateReportLexicalErrors();
+            if (lexicalAnalyzer != null)
+            {
+                lexicalAnalyzer.GenerateReportLexicalErrors();
+            }
         }
     }
 }
