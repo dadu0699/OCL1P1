@@ -88,6 +88,29 @@ namespace OCL1P1.controller
                 case Token.Type.QUESTION_MARK_SIGN:
                     break;
                 case Token.Type.ASTERISK_SIGN:
+                    indexState++;
+                    State s1A = new State(indexState.ToString());
+                    Transition t1A = new Transition(rootState, null, s1A);
+                    transitions.Add(t1A);
+
+                    indexToken++;
+                    indexState++;
+                    NFA n2A = Construction();
+                    n2A.Initial.From = t1A.To;
+                    Transition t21A = new Transition(n2A.Acceptance.To, null, s1A);
+                    transitions.Add(t21A);
+
+                    indexState++;
+                    State s3A = new State(indexState.ToString());
+                    Transition t23A = new Transition(n2A.Acceptance.To, null, s3A);
+                    transitions.Add(t23A);
+
+
+                    Transition t03A = new Transition(rootState, null, s3A);
+                    transitions.Add(t03A);
+
+                    rootNFA.Initial.To = rootState;
+                    rootNFA.Acceptance = new Transition(null, null, t03A.To);
                     break;
                 case Token.Type.PLUS_SIGN:
                     break;
