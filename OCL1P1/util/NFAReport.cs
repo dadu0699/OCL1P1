@@ -44,6 +44,7 @@ namespace OCL1P1.util
             this.graph.Append("\n\tgraph [rankdir = LR];");
             this.graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
+            Transition last = transitions.Last();
             foreach (Transition item in transitions)
             {
                 if (item.From != null)
@@ -52,7 +53,7 @@ namespace OCL1P1.util
                 }
                 else
                 {
-                    this.graph.Append("\t\"\"[shape = none]");
+                    this.graph.Append("\t\"\"[shape = none];");
                     this.graph.Append("\n\t\"\"");
                 }
 
@@ -73,6 +74,11 @@ namespace OCL1P1.util
                 else
                 {
                     this.graph.AppendLine("[label=\"&epsilon;\"];");
+                }
+
+                if (item.Equals(last))
+                {
+                    this.graph.Append("\t" + item.To.StateName + " [shape = doublecircle];");
                 }
             }
 

@@ -238,7 +238,8 @@ namespace OCL1P1.analyzer
                 NFAReport nfaReport = new NFAReport();
                 nfa.Construction();
                 nfaReport.ReportNFA(symbol.Name, nfa.Transitions);
-                
+
+                Transition last = nfa.Transitions.Last();
                 foreach (Transition item in nfa.Transitions)
                 {
                     if (item.From != null)
@@ -268,6 +269,11 @@ namespace OCL1P1.analyzer
                     else
                     {
                         Console.WriteLine("[label=\"&epsilon;\"];");
+                    }
+
+                    if (item.Equals(last))
+                    {
+                        Console.WriteLine("\t" + item.To.StateName + " [shape = doublecircle];");
                     }
                 }
 
