@@ -89,8 +89,6 @@ namespace OCL1P1.controller
                     rootNFA.Initial.To = rootState;
                     rootNFA.Acceptance = new Transition(null, epsilon, t45D.To);
                     break;
-                case Token.Type.QUESTION_MARK_SIGN:
-                    break;
                 case Token.Type.ASTERISK_SIGN:
                     indexState++;
                     State s1A = new State(indexState.ToString());
@@ -130,7 +128,7 @@ namespace OCL1P1.controller
             return rootNFA;
         }
 
-        public void FactorizedEXP()
+        private void FactorizedEXP()
         {
             int index = 0;
 
@@ -142,6 +140,12 @@ namespace OCL1P1.controller
                     tokens[i] = new Token(0, 0, 0, Token.Type.DISJUNCTION_SIGN, "|");
                     AddEpsilon(i + 1);
                 }
+                else if (tokens[i].TypeToken == Token.Type.PLUS_SIGN)
+                {
+                    index++;
+                    tokens[i] = new Token(0, 0, 0, Token.Type.CONCATENATION_SIGN, ".");
+                    AddKleene(i + 1);
+                }
             }
 
             foreach (var item in tokens)
@@ -150,10 +154,10 @@ namespace OCL1P1.controller
             }
         }
 
-        public void AddEpsilon(int position)
+        private void AddEpsilon(int position)
         {
             int index = 1;
-            for (int i = position; i < tokens.Count() - 1; i++)
+            for (int i = position; i < tokens.Count(); i++)
             {
                 if (tokens[i].TypeToken == Token.Type.CONCATENATION_SIGN
                         || tokens[i].TypeToken == Token.Type.DISJUNCTION_SIGN)
@@ -179,6 +183,50 @@ namespace OCL1P1.controller
                     else
                     {
                         tokens.Insert(i, epsilon);
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void AddKleene(int position)
+        {
+            List<Token> auxTokens = new List<Token>();
+            int index = 1;
+            for (int i = position; i < tokens.Count(); i++)
+            {
+                if (tokens[i].TypeToken == Token.Type.CONCATENATION_SIGN
+                        || tokens[i].TypeToken == Token.Type.DISJUNCTION_SIGN)
+                {
+                    index++;
+                }
+                else if (tokens[i].TypeToken == Token.Type.ID
+                    || tokens[i].TypeToken == Token.Type.NUMBER
+                    || tokens[i].TypeToken == Token.Type.SYMBOL
+                    || tokens[i].TypeToken == Token.Type.STR
+                    || tokens[i].TypeToken == Token.Type.EPSILON)
+                {
+                    index--;
+                }
+
+                auxTokens.Add(tokens[i]);
+
+                if (index == 0)
+                {
+                    i++;
+                    if (i > tokens.Count() - 1)
+                    {
+                        tokens.Add(new Token(0, 0, 0, Token.Type.ASTERISK_SIGN, "*"));
+                        tokens.AddRange(auxTokens);
+                    }
+                    else
+                    {
+                        auxTokens.Reverse();
+                        foreach (Token item in auxTokens)
+                        {
+                            tokens.Insert(i, item);
+                        }
+                        tokens.Insert(i, new Token(0, 0, 0, Token.Type.ASTERISK_SIGN, "*"));
                     }
                     break;
                 }
