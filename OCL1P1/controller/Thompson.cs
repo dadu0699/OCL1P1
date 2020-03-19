@@ -13,6 +13,7 @@ namespace OCL1P1.controller
         private List<Token> tokens;
         private int indexToken;
         private int indexState;
+        private Token epsilon;
 
         internal List<Transition> Transitions { get; set; }
 
@@ -23,15 +24,19 @@ namespace OCL1P1.controller
 
             this.symbol = symbol;
             tokens.AddRange(symbol.Value);
+
             indexToken = 0;
             indexState = 0;
+            epsilon = new Token(0, 0, 0, Token.Type.EPSILON, "&epsilon;");
+
+            FactorizedEXP();
         }
 
         public NFA Construction()
         {
             Token token = tokens.ElementAt(indexToken);
             State rootState = new State(indexState.ToString());
-            Transition rootTransition = new Transition(null, null, rootState);
+            Transition rootTransition = new Transition(null, epsilon, rootState);
             NFA rootNFA = new NFA(rootTransition, rootTransition);
             Transitions.Add(rootTransition);
 
@@ -56,7 +61,7 @@ namespace OCL1P1.controller
                 case Token.Type.DISJUNCTION_SIGN:
                     indexState++;
                     State s1D = new State(indexState.ToString());
-                    Transition t1D = new Transition(rootState, null, s1D);
+                    Transition t1D = new Transition(rootState, epsilon, s1D);
                     Transitions.Add(t1D);
 
                     indexToken++;
@@ -66,7 +71,7 @@ namespace OCL1P1.controller
 
                     indexState++;
                     State s3D = new State(indexState.ToString());
-                    Transition t3D = new Transition(rootState, null, s3D);
+                    Transition t3D = new Transition(rootState, epsilon, s3D);
                     Transitions.Add(t3D);
 
                     indexToken++;
@@ -76,40 +81,40 @@ namespace OCL1P1.controller
 
                     indexState++;
                     State s5D = new State(indexState.ToString());
-                    Transition t25D = new Transition(n2D.Acceptance.To, null, s5D);
+                    Transition t25D = new Transition(n2D.Acceptance.To, epsilon, s5D);
                     Transitions.Add(t25D);
-                    Transition t45D = new Transition(n4D.Acceptance.To, null, s5D);
+                    Transition t45D = new Transition(n4D.Acceptance.To, epsilon, s5D);
                     Transitions.Add(t45D);
 
                     rootNFA.Initial.To = rootState;
-                    rootNFA.Acceptance = new Transition(null, null, t45D.To);
+                    rootNFA.Acceptance = new Transition(null, epsilon, t45D.To);
                     break;
                 case Token.Type.QUESTION_MARK_SIGN:
                     break;
                 case Token.Type.ASTERISK_SIGN:
                     indexState++;
                     State s1A = new State(indexState.ToString());
-                    Transition t1A = new Transition(rootState, null, s1A);
+                    Transition t1A = new Transition(rootState, epsilon, s1A);
                     Transitions.Add(t1A);
 
                     indexToken++;
                     indexState++;
                     NFA n2A = Construction();
                     n2A.Initial.From = t1A.To;
-                    Transition t21A = new Transition(n2A.Acceptance.To, null, s1A);
+                    Transition t21A = new Transition(n2A.Acceptance.To, epsilon, s1A);
                     Transitions.Add(t21A);
 
                     indexState++;
                     State s3A = new State(indexState.ToString());
-                    Transition t23A = new Transition(n2A.Acceptance.To, null, s3A);
+                    Transition t23A = new Transition(n2A.Acceptance.To, epsilon, s3A);
                     Transitions.Add(t23A);
 
 
-                    Transition t03A = new Transition(rootState, null, s3A);
+                    Transition t03A = new Transition(rootState, epsilon, s3A);
                     Transitions.Add(t03A);
 
                     rootNFA.Initial.To = rootState;
-                    rootNFA.Acceptance = new Transition(null, null, t03A.To);
+                    rootNFA.Acceptance = new Transition(null, epsilon, t03A.To);
                     break;
                 case Token.Type.PLUS_SIGN:
                     break;
@@ -117,11 +122,67 @@ namespace OCL1P1.controller
                 case Token.Type.NUMBER:
                 case Token.Type.STR:
                 case Token.Type.SYMBOL:
+                case Token.Type.EPSILON:
                     rootTransition.Token = token;
                     Console.WriteLine(" -> " + rootTransition.Token.Value + " -> " + rootTransition.To.StateName);
                     break;
             }
             return rootNFA;
+        }
+
+        public void FactorizedEXP()
+        {
+            int index = 0;
+
+            for (int i = 0; i < tokens.Count() - 1; i++)
+            {
+                if (tokens[i].TypeToken == Token.Type.QUESTION_MARK_SIGN)
+                {
+                    index++;
+                    tokens[i] = new Token(0, 0, 0, Token.Type.DISJUNCTION_SIGN, "|");
+                    AddEpsilon(i + 1);
+                }
+            }
+
+            foreach (var item in tokens)
+            {
+                Console.WriteLine(item.Value);
+            }
+        }
+
+        public void AddEpsilon(int position)
+        {
+            int index = 1;
+            for (int i = position; i < tokens.Count() - 1; i++)
+            {
+                if (tokens[i].TypeToken == Token.Type.CONCATENATION_SIGN
+                        || tokens[i].TypeToken == Token.Type.DISJUNCTION_SIGN)
+                {
+                    index++;
+                }
+                else if (tokens[i].TypeToken == Token.Type.ID
+                    || tokens[i].TypeToken == Token.Type.NUMBER
+                    || tokens[i].TypeToken == Token.Type.SYMBOL
+                    || tokens[i].TypeToken == Token.Type.STR
+                    || tokens[i].TypeToken == Token.Type.EPSILON)
+                {
+                    index--;
+                }
+
+                if (index == 0)
+                {
+                    i++;
+                    if (i > tokens.Count() - 1)
+                    {
+                        tokens.Add(epsilon);
+                    }
+                    else
+                    {
+                        tokens.Insert(i, epsilon);
+                    }
+                    break;
+                }
+            }
         }
     }
 }
