@@ -82,8 +82,8 @@ namespace OCL1P1.controller
                     Transition t45D = new Transition(n4D.Acceptance.To, null, s5D);
                     transitions.Add(t45D);
 
-                    rootNFA.Initial = t1D;
-                    rootNFA.Acceptance = t45D;
+                    rootNFA.Initial.To = rootState;
+                    rootNFA.Acceptance = new Transition(null, null, t45D.To);
                     break;
                 case Token.Type.QUESTION_MARK_SIGN:
                     break;

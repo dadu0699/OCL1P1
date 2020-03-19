@@ -149,6 +149,10 @@ namespace OCL1P1
                     interpreter = new Interpreter(lexicalAnalyzer.ListToken);
                     // interpreter.GenerateReports();
                 }
+                else
+                {
+                    syntacticAnalyzer.GenerateReports();
+                }
             }
         }
 

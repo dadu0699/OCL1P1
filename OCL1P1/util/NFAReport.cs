@@ -41,7 +41,7 @@ namespace OCL1P1.util
             string rpng = route + "\\" + name.Replace(" ", "") + ".png";
 
             this.graph.Append("digraph G {");
-            this.graph.Append("\n\tgraph [rankdir = LR]");
+            this.graph.Append("\n\tgraph [rankdir = LR];");
             this.graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
             foreach (Transition item in transitions)
