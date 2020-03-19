@@ -11,14 +11,15 @@ namespace OCL1P1.controller
     {
         private Symbol symbol;
         private List<Token> tokens;
-        private List<Transition> transitions;
         private int indexToken;
         private int indexState;
+
+        internal List<Transition> Transitions { get; set; }
 
         public Thompson(Symbol symbol)
         {
             tokens = new List<Token>();
-            transitions = new List<Transition>();
+            Transitions = new List<Transition>();
 
             this.symbol = symbol;
             tokens.AddRange(symbol.Value);
@@ -26,15 +27,13 @@ namespace OCL1P1.controller
             indexState = 0;
         }
 
-        internal List<Transition> Transitions { get => transitions; set => transitions = value; }
-
         public NFA Construction()
         {
             Token token = tokens.ElementAt(indexToken);
             State rootState = new State(indexState.ToString());
             Transition rootTransition = new Transition(null, null, rootState);
             NFA rootNFA = new NFA(rootTransition, rootTransition);
-            transitions.Add(rootTransition);
+            Transitions.Add(rootTransition);
 
             switch (token.TypeToken)
             {
@@ -58,7 +57,7 @@ namespace OCL1P1.controller
                     indexState++;
                     State s1D = new State(indexState.ToString());
                     Transition t1D = new Transition(rootState, null, s1D);
-                    transitions.Add(t1D);
+                    Transitions.Add(t1D);
 
                     indexToken++;
                     indexState++;
@@ -68,7 +67,7 @@ namespace OCL1P1.controller
                     indexState++;
                     State s3D = new State(indexState.ToString());
                     Transition t3D = new Transition(rootState, null, s3D);
-                    transitions.Add(t3D);
+                    Transitions.Add(t3D);
 
                     indexToken++;
                     indexState++;
@@ -78,9 +77,9 @@ namespace OCL1P1.controller
                     indexState++;
                     State s5D = new State(indexState.ToString());
                     Transition t25D = new Transition(n2D.Acceptance.To, null, s5D);
-                    transitions.Add(t25D);
+                    Transitions.Add(t25D);
                     Transition t45D = new Transition(n4D.Acceptance.To, null, s5D);
-                    transitions.Add(t45D);
+                    Transitions.Add(t45D);
 
                     rootNFA.Initial.To = rootState;
                     rootNFA.Acceptance = new Transition(null, null, t45D.To);
@@ -91,23 +90,23 @@ namespace OCL1P1.controller
                     indexState++;
                     State s1A = new State(indexState.ToString());
                     Transition t1A = new Transition(rootState, null, s1A);
-                    transitions.Add(t1A);
+                    Transitions.Add(t1A);
 
                     indexToken++;
                     indexState++;
                     NFA n2A = Construction();
                     n2A.Initial.From = t1A.To;
                     Transition t21A = new Transition(n2A.Acceptance.To, null, s1A);
-                    transitions.Add(t21A);
+                    Transitions.Add(t21A);
 
                     indexState++;
                     State s3A = new State(indexState.ToString());
                     Transition t23A = new Transition(n2A.Acceptance.To, null, s3A);
-                    transitions.Add(t23A);
+                    Transitions.Add(t23A);
 
 
                     Transition t03A = new Transition(rootState, null, s3A);
-                    transitions.Add(t03A);
+                    Transitions.Add(t03A);
 
                     rootNFA.Initial.To = rootState;
                     rootNFA.Acceptance = new Transition(null, null, t03A.To);

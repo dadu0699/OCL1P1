@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -14,15 +15,19 @@ namespace OCL1P1
 {
     public partial class Form1 : Form
     {
-        private int countTab;
         private LexicalAnalyzer lexicalAnalyzer;
         private SyntacticAnalyzer syntacticAnalyzer;
         private Interpreter interpreter;
+        private int countTab;
+        private int indexImage;
+        private List<string> images;
 
         public Form1()
         {
             InitializeComponent();
             countTab = 1;
+            indexImage = 0;
+            images = new List<string>();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -133,7 +138,23 @@ namespace OCL1P1
             }
         }
 
-        private void analyzeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveTokensToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lexicalAnalyzer != null)
+            {
+                lexicalAnalyzer.GenerateReportToken();
+            }
+        }
+
+        private void saveErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lexicalAnalyzer != null)
+            {
+                lexicalAnalyzer.GenerateReportLexicalErrors();
+            }
+        }
+
+        private void ThompsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RichTextBox richTextBox = tabControl1.SelectedTab.Controls.Cast<RichTextBox>().FirstOrDefault(x => x is RichTextBox);
             string content = richTextBox.Text;
@@ -148,6 +169,13 @@ namespace OCL1P1
                 {
                     interpreter = new Interpreter(lexicalAnalyzer.ListToken);
                     // interpreter.GenerateReports();
+
+
+                    images.AddRange(interpreter.RoutesNFA);
+                    if (images.Count > 0)
+                    {
+                        LoadImage(0);
+                    }
                 }
                 else
                 {
@@ -156,19 +184,54 @@ namespace OCL1P1
             }
         }
 
-        private void saveTokensToolStripMenuItem_Click(object sender, EventArgs e)
+        private void nextButton_Click(object sender, EventArgs e)
         {
-            if (lexicalAnalyzer != null)
+            if (images.Count > 0)
             {
-                lexicalAnalyzer.GenerateReportToken();
+                indexImage++;
+
+                if (indexImage > images.Count - 1)
+                {
+                    indexImage = 0;
+                }
+
+                LoadImage(indexImage);
             }
         }
 
-        private void saveErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void prevButton_Click(object sender, EventArgs e)
         {
-            if (lexicalAnalyzer != null)
+            if (images.Count > 0)
             {
-                lexicalAnalyzer.GenerateReportLexicalErrors();
+                indexImage--;
+
+                if (indexImage < 0)
+                {
+                    indexImage = images.Count - 1;
+                }
+
+                LoadImage(indexImage);
+            }
+        }
+
+        private void LoadImage(int index)
+        {
+            if (automataImage.Image != null)
+            {
+                automataImage.Image.Dispose();
+
+            }
+            automataImage.Image = null;
+
+            Image image = Image.FromFile(images[index]);
+            automataImage.Image = image;
+        }
+
+        private void automataImage_DoubleClick(object sender, EventArgs e)
+        {
+            if (automataImage.Image != null)
+            {
+                Process.Start(images[indexImage]);
             }
         }
     }

@@ -3,6 +3,7 @@ using OCL1P1.model;
 using OCL1P1.util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,10 +21,15 @@ namespace OCL1P1.analyzer
         internal List<Token> ListToken { get; set; }
         internal List<Error> ListError { get; set; }
         internal List<Symbol> SymbolTable { get; set; }
+        public List<string> RoutesNFA { get; set; }
 
         public Interpreter(List<Token> listToken)
         {
             ListToken = new List<Token>();
+            ListError = new List<Error>();
+            SymbolTable = new List<Symbol>();
+            RoutesNFA = new List<string>();
+
             ListToken.AddRange(listToken);
             ListToken.Add(new Token(0, 0, 0, Token.Type.END, "END"));
             index = 0;
@@ -32,8 +38,6 @@ namespace OCL1P1.analyzer
 
             idError = 0;
             idSymbol = 0;
-            ListError = new List<Error>();
-            SymbolTable = new List<Symbol>();
 
             Start();
         }
@@ -238,6 +242,12 @@ namespace OCL1P1.analyzer
                 NFAReport nfaReport = new NFAReport();
                 nfa.Construction();
                 nfaReport.ReportNFA(symbol.Name, nfa.Transitions);
+
+                string imageRoute = Directory.GetCurrentDirectory() + "\\" + symbol.Name + ".png";
+                if (File.Exists(imageRoute))
+                {
+                    RoutesNFA.Add(imageRoute);
+                }
 
                 Transition last = nfa.Transitions.Last();
                 foreach (Transition item in nfa.Transitions)
