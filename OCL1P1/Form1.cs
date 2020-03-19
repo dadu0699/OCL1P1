@@ -26,8 +26,6 @@ namespace OCL1P1
         {
             InitializeComponent();
             countTab = 1;
-            indexImage = 0;
-            images = new List<string>();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -159,6 +157,16 @@ namespace OCL1P1
             RichTextBox richTextBox = tabControl1.SelectedTab.Controls.Cast<RichTextBox>().FirstOrDefault(x => x is RichTextBox);
             string content = richTextBox.Text;
 
+
+            indexImage = 0;
+            images = new List<string>();
+            if (automataImage.Image != null)
+            {
+                automataImage.Image.Dispose();
+
+            }
+            automataImage.Image = null;
+
             lexicalAnalyzer = new LexicalAnalyzer();
             lexicalAnalyzer.Scanner(content);
 
@@ -168,7 +176,7 @@ namespace OCL1P1
                 if (syntacticAnalyzer.ListError.Count() == 0)
                 {
                     interpreter = new Interpreter(lexicalAnalyzer.ListToken);
-                    // interpreter.GenerateReports();
+                    interpreter.GenerateReports();
 
 
                     images.AddRange(interpreter.RoutesNFA);
@@ -186,7 +194,7 @@ namespace OCL1P1
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            if (images.Count > 0)
+            if (images != null && images.Count > 0)
             {
                 indexImage++;
 
@@ -201,7 +209,7 @@ namespace OCL1P1
 
         private void prevButton_Click(object sender, EventArgs e)
         {
-            if (images.Count > 0)
+            if (images != null && images.Count > 0)
             {
                 indexImage--;
 

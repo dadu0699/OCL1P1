@@ -240,6 +240,7 @@ namespace OCL1P1.analyzer
                 // Thompson's construction
                 Thompson nfa = new Thompson(symbol);
                 NFAReport nfaReport = new NFAReport();
+
                 nfa.Construction();
                 nfaReport.ReportNFA(symbol.Name, nfa.Transitions);
 

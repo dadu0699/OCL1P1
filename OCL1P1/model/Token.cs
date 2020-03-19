@@ -35,6 +35,7 @@ namespace OCL1P1.model
             NUMBER,
             STR, // " "
             SYMBOL, // ASCII 35 - 125
+            EPSILON, // ε
             END // END
         }
 
@@ -105,6 +106,10 @@ namespace OCL1P1.model
                         return "STR"; // " "
                     case Type.SYMBOL:
                         return "SYMBOL"; // ASCII 35 - 125
+                    case Type.EPSILON:
+                        return "EPSILON"; // ε
+                    case Type.END:
+                        return "END OF FILE"; // EOF
                     default:
                         return "Unknown";
                 }
