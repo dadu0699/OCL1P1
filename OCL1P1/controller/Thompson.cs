@@ -114,8 +114,6 @@ namespace OCL1P1.controller
                     rootNFA.Initial.To = rootState;
                     rootNFA.Acceptance = new Transition(null, epsilon, t03A.To);
                     break;
-                case Token.Type.PLUS_SIGN:
-                    break;
                 case Token.Type.ID:
                 case Token.Type.NUMBER:
                 case Token.Type.STR:

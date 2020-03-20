@@ -250,44 +250,6 @@ namespace OCL1P1.analyzer
                     RoutesNFA.Add(imageRoute);
                 }
 
-                Transition last = nfa.Transitions.Last();
-                foreach (Transition item in nfa.Transitions)
-                {
-                    if (item.From != null)
-                    {
-                        Console.Write("\t" + item.From.StateName);
-                    }
-                    else
-                    {
-                        Console.Write("\t\"\"[shape = none]");
-                        Console.Write("\n\t\"\"");
-                    }
-
-                    if (item.To != null)
-                    {
-                        Console.Write("->" + item.To.StateName);
-                    }
-                    else
-                    {
-
-                        Console.Write("-> \"\"");
-                    }
-
-                    if (item.Token != null)
-                    {
-                        Console.WriteLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
-                    }
-                    else
-                    {
-                        Console.WriteLine("[label=\"&epsilon;\"];");
-                    }
-
-                    if (item.Equals(last))
-                    {
-                        Console.WriteLine("\t" + item.To.StateName + " [shape = doublecircle];");
-                    }
-                }
-
             }
             else
             {

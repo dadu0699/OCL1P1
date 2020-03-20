@@ -176,8 +176,6 @@ namespace OCL1P1
                 if (syntacticAnalyzer.ListError.Count() == 0)
                 {
                     interpreter = new Interpreter(lexicalAnalyzer.ListToken);
-                    interpreter.GenerateReports();
-
 
                     images.AddRange(interpreter.RoutesNFA);
                     if (images.Count > 0)
@@ -240,6 +238,14 @@ namespace OCL1P1
             if (automataImage.Image != null)
             {
                 Process.Start(images[indexImage]);
+            }
+        }
+
+        private void SymbolTableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (interpreter != null)
+            {
+                interpreter.GenerateReports();
             }
         }
     }
