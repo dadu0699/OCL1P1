@@ -229,8 +229,11 @@ namespace OCL1P1
             }
             automataImage.Image = null;
 
-            Image image = Image.FromFile(images[index]);
-            automataImage.Image = image;
+            if (File.Exists(images[index]))
+            {
+                Image image = Image.FromFile(images[index]);
+                automataImage.Image = image;
+            }
         }
 
         private void automataImage_DoubleClick(object sender, EventArgs e)

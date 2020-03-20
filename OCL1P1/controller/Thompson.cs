@@ -145,11 +145,6 @@ namespace OCL1P1.controller
                     AddKleene(i + 1);
                 }
             }
-
-            foreach (var item in tokens)
-            {
-                Console.WriteLine(item.Value);
-            }
         }
 
         private void AddEpsilon(int position)

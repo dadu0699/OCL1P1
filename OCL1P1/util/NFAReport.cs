@@ -53,7 +53,7 @@ namespace OCL1P1.util
                 }
                 else
                 {
-                    this.graph.Append("\t\"\"[shape = none];");
+                    this.graph.Append("\n\t\"\"[shape = none];");
                     this.graph.Append("\n\t\"\"");
                 }
 
