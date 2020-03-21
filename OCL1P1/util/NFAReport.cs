@@ -61,14 +61,10 @@ namespace OCL1P1.util
                 {
                     graph.Append("->" + item.To.StateName);
                 }
-                else
-                {
-                    graph.Append("-> \"\"");
-                }
 
                 if (item.Token != null)
                 {
-                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
+                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "").Replace("\\", "\\\\") + "\"];");
                 }
                 else
                 {
@@ -81,7 +77,7 @@ namespace OCL1P1.util
                 }
             }
 
-            this.graph.Append("\n}");
+            graph.Append("\n}");
             generateDotPNG(rdot, rpng);
         }
     }

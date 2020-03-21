@@ -126,6 +126,10 @@ namespace OCL1P1.controller
                 case Token.Type.NUMBER:
                 case Token.Type.STR:
                 case Token.Type.SYMBOL:
+                case Token.Type.LINE_BREAK:
+                case Token.Type.SINGLE_QUOTE:
+                case Token.Type.DOUBLE_QUOTE:
+                case Token.Type.TABULATION:
                 case Token.Type.EPSILON:
                     rootTransition.Token = token;
                     Console.WriteLine(" -> " + rootTransition.Token.Value + " -> " + rootTransition.To.StateName);
@@ -264,15 +268,7 @@ namespace OCL1P1.controller
                 if (item.Count > 1)
                 {
                     auxTransitions = auxTransitions.Where(x => x.From.StateName != item.State.StateName).ToList();
-                    // auxTransitions = auxTransitions.Where(x => x.To.StateName != item.State.StateName).ToList();
                 }
-            }
-
-
-
-            foreach (var item in auxTransitions)
-            {
-                Console.WriteLine(item.From.StateName + " -> " + item.Token.Value + " -> " + item.To.StateName);
             }
 
             Transition auxFrom;

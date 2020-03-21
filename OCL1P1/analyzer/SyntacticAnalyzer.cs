@@ -218,7 +218,13 @@ namespace OCL1P1.analyzer
                 || preAnalysis.TypeToken == Token.Type.ASTERISK_SIGN
                 || preAnalysis.TypeToken == Token.Type.PLUS_SIGN
                 || preAnalysis.TypeToken == Token.Type.SYMBOL_LEFT_CURLY_BRACKET
-                || preAnalysis.TypeToken == Token.Type.STR)
+                || preAnalysis.TypeToken == Token.Type.STR
+                || preAnalysis.TypeToken == Token.Type.NUMBER
+                || preAnalysis.TypeToken == Token.Type.SYMBOL
+                || preAnalysis.TypeToken == Token.Type.LINE_BREAK
+                || preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.TABULATION)
             {
                 SYMBEXPR();
                 STRUCEXPRP();
@@ -227,7 +233,7 @@ namespace OCL1P1.analyzer
             {
                 AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONCATENATION SIGN " +
                     "| DISJUNCTION SIGN | QUESTION MARK SIGN | ASTERISK SIGN | PLUS SIGN | SYMBOL LEFT CURLY BRACKET " +
-                    "| STRING'");
+                    "| STRING | NUMBER | SYMBOL | LINE BREAK | SINGLE QUOTE | DOUBLE QUOTE | TABULATION'");
             }
         }
 
@@ -239,7 +245,13 @@ namespace OCL1P1.analyzer
                 || preAnalysis.TypeToken == Token.Type.ASTERISK_SIGN
                 || preAnalysis.TypeToken == Token.Type.PLUS_SIGN
                 || preAnalysis.TypeToken == Token.Type.SYMBOL_LEFT_CURLY_BRACKET
-                || preAnalysis.TypeToken == Token.Type.STR)
+                || preAnalysis.TypeToken == Token.Type.STR
+                || preAnalysis.TypeToken == Token.Type.NUMBER
+                || preAnalysis.TypeToken == Token.Type.SYMBOL
+                || preAnalysis.TypeToken == Token.Type.LINE_BREAK
+                || preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE
+                || preAnalysis.TypeToken == Token.Type.TABULATION)
             {
                 SYMBEXPR();
                 STRUCEXPRP();
@@ -278,11 +290,35 @@ namespace OCL1P1.analyzer
             {
                 Parser(Token.Type.STR);
             }
+            else if (preAnalysis.TypeToken == Token.Type.NUMBER)
+            {
+                Parser(Token.Type.NUMBER);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.SYMBOL)
+            {
+                Parser(Token.Type.SYMBOL);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.LINE_BREAK)
+            {
+                Parser(Token.Type.LINE_BREAK);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.SINGLE_QUOTE)
+            {
+                Parser(Token.Type.SINGLE_QUOTE);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.DOUBLE_QUOTE)
+            {
+                Parser(Token.Type.DOUBLE_QUOTE);
+            }
+            else if (preAnalysis.TypeToken == Token.Type.TABULATION)
+            {
+                Parser(Token.Type.TABULATION);
+            }
             else
             {
                 AddError(preAnalysis.Row, preAnalysis.Column, preAnalysis.toStringTypeToken, "Was expected 'CONCATENATION SIGN " +
                     "| DISJUNCTION SIGN | QUESTION MARK SIGN | ASTERISK SIGN | PLUS SIGN | SYMBOL LEFT CURLY BRACKET " +
-                    "| STRING'");
+                    "| STRING | NUMBER | SYMBOL | LINE BREAK | SINGLE QUOTE | DOUBLE QUOTE | TABULATION'");
             }
         }
 
