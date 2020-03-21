@@ -16,11 +16,13 @@ namespace OCL1P1.controller
         private Token epsilon;
 
         internal List<Transition> Transitions { get; set; }
+        internal List<State> States { get; set; }
 
         public Thompson(Symbol symbol)
         {
             tokens = new List<Token>();
             Transitions = new List<Transition>();
+            States = new List<State>();
 
             this.symbol = symbol;
             tokens.AddRange(symbol.Value);
@@ -36,6 +38,7 @@ namespace OCL1P1.controller
         {
             Token token = tokens.ElementAt(indexToken);
             State rootState = new State(indexState.ToString());
+            States.Add(rootState);
             Transition rootTransition = new Transition(null, epsilon, rootState);
             NFA rootNFA = new NFA(rootTransition, rootTransition);
             Transitions.Add(rootTransition);
@@ -61,6 +64,7 @@ namespace OCL1P1.controller
                 case Token.Type.DISJUNCTION_SIGN:
                     indexState++;
                     State s1D = new State(indexState.ToString());
+                    States.Add(s1D);
                     Transition t1D = new Transition(rootState, epsilon, s1D);
                     Transitions.Add(t1D);
 
@@ -71,6 +75,7 @@ namespace OCL1P1.controller
 
                     indexState++;
                     State s3D = new State(indexState.ToString());
+                    States.Add(s3D);
                     Transition t3D = new Transition(rootState, epsilon, s3D);
                     Transitions.Add(t3D);
 
@@ -81,6 +86,7 @@ namespace OCL1P1.controller
 
                     indexState++;
                     State s5D = new State(indexState.ToString());
+                    States.Add(s5D);
                     Transition t25D = new Transition(n2D.Acceptance.To, epsilon, s5D);
                     Transitions.Add(t25D);
                     Transition t45D = new Transition(n4D.Acceptance.To, epsilon, s5D);
@@ -92,6 +98,7 @@ namespace OCL1P1.controller
                 case Token.Type.ASTERISK_SIGN:
                     indexState++;
                     State s1A = new State(indexState.ToString());
+                    States.Add(s1A);
                     Transition t1A = new Transition(rootState, epsilon, s1A);
                     Transitions.Add(t1A);
 
@@ -104,6 +111,7 @@ namespace OCL1P1.controller
 
                     indexState++;
                     State s3A = new State(indexState.ToString());
+                    States.Add(s3A);
                     Transition t23A = new Transition(n2A.Acceptance.To, epsilon, s3A);
                     Transitions.Add(t23A);
 
@@ -223,6 +231,88 @@ namespace OCL1P1.controller
                     }
                     break;
                 }
+            }
+        }
+
+        public void RemoveUnnecessaryT()
+        {
+            List<Transition> auxTransitions = new List<Transition>();
+            foreach (Transition transition in Transitions)
+            {
+                if (transition.Token.TypeToken == Token.Type.EPSILON 
+                    && transition.From != null)
+                {
+                    auxTransitions.Add(transition);
+                }
+            }
+
+            var numberOfStatesTDuplicates = Transitions.GroupBy(u => u.To)
+                .Select(x => new {Count = x.Count(), State = x.Key}).ToList();
+            foreach (var item in numberOfStatesTDuplicates)
+            {
+                if (item.Count > 1)
+                {
+                    auxTransitions = auxTransitions.Where(x => x.To.StateName != item.State.StateName).ToList();
+                    auxTransitions = auxTransitions.Where(x => x.From.StateName != item.State.StateName).ToList();
+                }
+            }
+
+            var numberOfStatesFDuplicates = Transitions.GroupBy(u => u.From)
+                .Select(x => new { Count = x.Count(), State = x.Key }).ToList();
+            foreach (var item in numberOfStatesFDuplicates)
+            {
+                if (item.Count > 1)
+                {
+                    auxTransitions = auxTransitions.Where(x => x.From.StateName != item.State.StateName).ToList();
+                    // auxTransitions = auxTransitions.Where(x => x.To.StateName != item.State.StateName).ToList();
+                }
+            }
+
+
+
+            foreach (var item in auxTransitions)
+            {
+                Console.WriteLine(item.From.StateName + " -> " + item.Token.Value + " -> " + item.To.StateName);
+            }
+
+            Transition auxFrom;
+            Transition auxTo;
+            foreach (Transition item in auxTransitions)
+            {
+                auxFrom = null;
+                auxTo = null;
+
+                foreach (Transition transition in Transitions)
+                {
+                    if (item.From == transition.From)
+                    {
+                        auxFrom = transition;
+                    }
+                }
+
+                foreach (Transition transition in Transitions)
+                {
+                    if (item.From == transition.To)
+                    {
+                        auxTo = transition;
+                    }
+                }
+
+                if (auxFrom != null && auxTo != null)
+                {
+                    auxTo.To = auxFrom.To;
+                }
+            }
+
+            foreach (Transition item in auxTransitions)
+            {
+                States.Remove(item.From);
+                Transitions.Remove(item);
+            }
+
+            for (int i = 0; i < States.Count(); i++)
+            {
+                States[i].StateName = i.ToString();
             }
         }
     }

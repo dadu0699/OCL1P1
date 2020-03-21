@@ -243,11 +243,15 @@ namespace OCL1P1.analyzer
 
                 nfa.Construction();
                 nfaReport.ReportNFA(symbol.Name, nfa.Transitions);
+                nfa.RemoveUnnecessaryT();
+                nfaReport.ReportNFA(symbol.Name + "Optimized", nfa.Transitions);
 
                 string imageRoute = Directory.GetCurrentDirectory() + "\\" + symbol.Name + ".png";
-                if (File.Exists(imageRoute))
+                string imageRouteOptimized = Directory.GetCurrentDirectory() + "\\" + symbol.Name + "Optimized.png";
+                if (File.Exists(imageRoute) && File.Exists(imageRouteOptimized))
                 {
                     RoutesNFA.Add(imageRoute);
+                    RoutesNFA.Add(imageRouteOptimized);
                 }
 
             }

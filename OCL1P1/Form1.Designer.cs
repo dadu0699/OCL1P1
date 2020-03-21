@@ -39,6 +39,7 @@
             this.saveErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorLéxicoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SymbolTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -53,7 +54,6 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.commandLineTextBox = new System.Windows.Forms.RichTextBox();
-            this.SymbolTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -157,8 +157,15 @@
             // errorLéxicoToolStripMenuItem
             // 
             this.errorLéxicoToolStripMenuItem.Name = "errorLéxicoToolStripMenuItem";
-            this.errorLéxicoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorLéxicoToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.errorLéxicoToolStripMenuItem.Text = "Error léxico";
+            // 
+            // SymbolTableToolStripMenuItem
+            // 
+            this.SymbolTableToolStripMenuItem.Name = "SymbolTableToolStripMenuItem";
+            this.SymbolTableToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.SymbolTableToolStripMenuItem.Text = "Tabla de símbolos";
+            this.SymbolTableToolStripMenuItem.Click += new System.EventHandler(this.SymbolTableToolStripMenuItem_Click);
             // 
             // panel2
             // 
@@ -325,13 +332,6 @@
             this.commandLineTextBox.TabIndex = 2;
             this.commandLineTextBox.Text = "";
             // 
-            // SymbolTableToolStripMenuItem
-            // 
-            this.SymbolTableToolStripMenuItem.Name = "SymbolTableToolStripMenuItem";
-            this.SymbolTableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.SymbolTableToolStripMenuItem.Text = "Tabla de símbolos";
-            this.SymbolTableToolStripMenuItem.Click += new System.EventHandler(this.SymbolTableToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,6 +342,7 @@
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";

@@ -50,35 +50,30 @@ namespace OCL1P1.util
                 if (item.From != null)
                 {
                     this.graph.Append("\t" + item.From.StateName);
-                }
-                else
-                {
-                    this.graph.Append("\n\t\"\"[shape = none];");
-                    this.graph.Append("\n\t\"\"");
-                }
 
-                if (item.To != null)
-                {
-                    this.graph.Append("->" + item.To.StateName);
-                }
-                else
-                {
+                    if (item.To != null)
+                    {
+                        this.graph.Append("->" + item.To.StateName);
+                    }
+                    else
+                    {
 
-                    this.graph.Append("-> \"\"");
-                }
+                        this.graph.Append("-> \"\"");
+                    }
 
-                if (item.Token != null)
-                {
-                    this.graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
-                }
-                else
-                {
-                    this.graph.AppendLine("[label=\"&epsilon;\"];");
-                }
+                    if (item.Token != null)
+                    {
+                        this.graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
+                    }
+                    else
+                    {
+                        this.graph.AppendLine("[label=\"&epsilon;\"];");
+                    }
 
-                if (item.Equals(last))
-                {
-                    this.graph.Append("\t" + item.To.StateName + " [shape = doublecircle];");
+                    if (item.Equals(last))
+                    {
+                        this.graph.Append("\t" + item.To.StateName + " [shape = doublecircle];");
+                    }
                 }
             }
 
