@@ -36,44 +36,48 @@ namespace OCL1P1.util
 
         public void ReportNFA(string name, List<Transition> transitions)
         {
-            this.graph = new StringBuilder();
+            graph = new StringBuilder();
             string rdot = route + "\\" + name.Replace(" ", "") + ".dot";
             string rpng = route + "\\" + name.Replace(" ", "") + ".png";
 
-            this.graph.Append("digraph G {");
-            this.graph.Append("\n\tgraph [rankdir = LR, label=\"AFN: " + name + "\", labelloc=t, fontsize=30];");
-            this.graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
+            graph.Append("digraph G {");
+            graph.Append("\n\tgraph [rankdir = LR, label=\"AFN: " + name + "\", labelloc=t, fontsize=30];");
+            graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
             Transition last = transitions.Last();
             foreach (Transition item in transitions)
             {
                 if (item.From != null)
                 {
-                    this.graph.Append("\t" + item.From.StateName);
+                    graph.Append("\t" + item.From.StateName);
+                }
+                else
+                {
+                    graph.Append("\n\t\"\"[shape = none];");
+                    graph.Append("\n\t\"\"");
+                }
 
-                    if (item.To != null)
-                    {
-                        this.graph.Append("->" + item.To.StateName);
-                    }
-                    else
-                    {
+                if (item.To != null)
+                {
+                    graph.Append("->" + item.To.StateName);
+                }
+                else
+                {
+                    graph.Append("-> \"\"");
+                }
 
-                        this.graph.Append("-> \"\"");
-                    }
+                if (item.Token != null)
+                {
+                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
+                }
+                else
+                {
+                    graph.AppendLine("[label=\"&epsilon;\"];");
+                }
 
-                    if (item.Token != null)
-                    {
-                        this.graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "") + "\"];");
-                    }
-                    else
-                    {
-                        this.graph.AppendLine("[label=\"&epsilon;\"];");
-                    }
-
-                    if (item.Equals(last))
-                    {
-                        this.graph.Append("\t" + item.To.StateName + " [shape = doublecircle];");
-                    }
+                if (item.Equals(last))
+                {
+                    graph.Append("\t" + item.To.StateName + " [shape = doublecircle];");
                 }
             }
 

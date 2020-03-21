@@ -298,7 +298,7 @@ namespace OCL1P1.controller
                     }
                 }
 
-                if (auxFrom != null && auxTo != null)
+                if (auxFrom != null && auxTo != null && auxFrom.From.StateName != "0")
                 {
                     auxTo.To = auxFrom.To;
                 }
