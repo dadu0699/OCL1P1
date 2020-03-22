@@ -14,6 +14,7 @@ namespace OCL1P1.controller
         private List<Token> terminals;
         private List<State> states;
         private int indexState;
+        private bool findState;
 
         private List<Transition> transitionsNFA;
         private List<State> initialState;
@@ -39,6 +40,7 @@ namespace OCL1P1.controller
             states.AddRange(sNFA);
 
             indexState = 0;
+            findState = false;
 
             NFATable();
         }
@@ -72,7 +74,7 @@ namespace OCL1P1.controller
                 List<State> cStates = CSets(statesList);
                 Subset subset = CreateSubset(cStates);
 
-                if (subset != null)
+                if (subset != null && findState == false)
                 {
                     foreach (Token item in terminals)
                     {
@@ -146,6 +148,7 @@ namespace OCL1P1.controller
             {
                 if (!item.States.Except(statesList).Any())
                 {
+                    findState = true;
                     return item;
                 }
             }
@@ -153,6 +156,7 @@ namespace OCL1P1.controller
             Subset subset = new Subset("S" + indexState, statesList.OrderBy(or => or.StateName).ToList());
             Subsets.Add(subset);
             indexState++;
+            findState = false;
             return subset;
         }
     }

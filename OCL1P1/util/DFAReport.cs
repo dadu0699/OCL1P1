@@ -44,7 +44,6 @@ namespace OCL1P1.util
             graph.Append("\n\tgraph [rankdir = LR, label=\"" + name + "\", labelloc=t, fontsize=30];");
             graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
-            Transition last = transitions.Last();
             foreach (Transition item in transitions)
             {
                 if (item.From != null)
