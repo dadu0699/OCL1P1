@@ -259,7 +259,7 @@ namespace OCL1P1.analyzer
                 DFAReport dfaReport = new DFAReport();
 
                 subsetConstruction.Construction();
-                dfaReport.ReportNFA("DFA_" + symbol.Name, subsetConstruction.Transitions);
+                dfaReport.ReportDFA("DFA_" + symbol.Name, subsetConstruction.Transitions);
 
                 imageRoute = Directory.GetCurrentDirectory() + "\\" + "DFA_" + symbol.Name + ".png";
                 if (File.Exists(imageRoute))

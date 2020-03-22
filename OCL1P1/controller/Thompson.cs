@@ -134,7 +134,10 @@ namespace OCL1P1.controller
                 case Token.Type.TABULATION:
                 case Token.Type.EPSILON:
                     rootTransition.Token = token;
-                    Terminals.Add(token);
+                    if (Terminals.Find(t => t.Value == token.Value) == null)
+                    {
+                        Terminals.Add(token);
+                    }
                     Console.WriteLine(" -> " + rootTransition.Token.Value + " -> " + rootTransition.To.StateName);
                     break;
             }

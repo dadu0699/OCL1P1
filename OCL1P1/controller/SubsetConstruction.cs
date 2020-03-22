@@ -47,7 +47,7 @@ namespace OCL1P1.controller
         {
             foreach (Transition transition in transitionsNFA)
             {
-                if ((transition.Token == null 
+                if ((transition.Token == null
                     || transition.Token.TypeToken == Token.Type.EPSILON)
                     && transition.From != null)
                 {
@@ -72,34 +72,29 @@ namespace OCL1P1.controller
                 List<State> cStates = CSets(statesList);
                 Subset subset = CreateSubset(cStates);
 
-                foreach (Token item in terminals)
+                if (subset != null)
                 {
-                    List<State> moveStates = Move(cStates, item);
-                    Subset toSubset = Cerradura(moveStates);
-
-                    if (subset != null && toSubset != null)
+                    foreach (Token item in terminals)
                     {
-                        State from = new State(subset.Name);
-                        State to = new State(toSubset.Name);
+                        List<State> moveStates = Move(cStates, item);
+                        Subset toSubset = Cerradura(moveStates);
 
-                        Console.WriteLine("..............");
-                        foreach (var ss in subset.States)
-                        {
-                            Console.WriteLine(ss.StateName);
-                        }
-                        Console.WriteLine("..............");
-                        Console.WriteLine(states.Last().StateName);
+                        State from = new State(subset.Name);
                         if (subset.States.Find(x => x.StateName == states.Last().StateName) != null)
                         {
                             from.IsEnd = true;
                         }
 
-                        if (toSubset.States.Find(x => x.StateName == states.Last().StateName) != null)
+                        if (toSubset != null)
                         {
-                            to.IsEnd = true;
-                        }
+                            State to = new State(toSubset.Name);
+                            if (toSubset.States.Find(x => x.StateName == states.Last().StateName) != null)
+                            {
+                                to.IsEnd = true;
+                            }
 
-                        Transitions.Add(new Transition(from, item, to));
+                            Transitions.Add(new Transition(from, item, to));
+                        }
                     }
                 }
                 return subset;
@@ -147,15 +142,17 @@ namespace OCL1P1.controller
 
         private Subset CreateSubset(List<State> statesList)
         {
-            Subset subset = Subsets.Find(r => r.States == statesList.OrderBy(or => or.StateName).ToList());
-
-            if (subset == null)
+            foreach (Subset item in Subsets)
             {
-                subset = new Subset("S" + indexState, statesList.OrderBy(or => or.StateName).ToList());
-                Subsets.Add(subset);
-                indexState++;
+                if (!item.States.Except(statesList).Any())
+                {
+                    return item;
+                }
             }
 
+            Subset subset = new Subset("S" + indexState, statesList.OrderBy(or => or.StateName).ToList());
+            Subsets.Add(subset);
+            indexState++;
             return subset;
         }
     }

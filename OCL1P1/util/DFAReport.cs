@@ -34,7 +34,7 @@ namespace OCL1P1.util
             process.WaitForExit();
         }
 
-        public void ReportNFA(string name, List<Transition> transitions)
+        public void ReportDFA(string name, List<Transition> transitions)
         {
             graph = new StringBuilder();
             string rdot = route + "\\" + name.Replace(" ", "") + ".dot";
