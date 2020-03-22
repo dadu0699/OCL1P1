@@ -49,7 +49,11 @@ namespace OCL1P1.util
             {
                 if (item.From != null)
                 {
-                    graph.Append("\t" + item.From.StateName);
+                    if (item.From.IsEnd)
+                    {
+                        graph.Append("\n\t" + item.From.StateName + " [shape = doublecircle];");
+                    }
+                    graph.Append("\n\t" + item.From.StateName);
                 }
                 else
                 {

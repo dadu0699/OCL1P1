@@ -47,11 +47,13 @@ namespace OCL1P1.controller
         {
             foreach (Transition transition in transitionsNFA)
             {
-                if (transition.Token.TypeToken == Token.Type.EPSILON && transition.From != null)
+                if ((transition.Token == null 
+                    || transition.Token.TypeToken == Token.Type.EPSILON)
+                    && transition.From != null)
                 {
                     epsilonTransitions.Add(transition);
                 }
-                else if (transition.Token.TypeToken != Token.Type.EPSILON)
+                else if (transition.Token != null && transition.From != null && transition.Token.TypeToken != Token.Type.EPSILON)
                 {
                     symbolTransitions.Add(transition);
                 }
@@ -79,6 +81,18 @@ namespace OCL1P1.controller
                     {
                         State from = new State(subset.Name);
                         State to = new State(toSubset.Name);
+
+                        Console.WriteLine("..............");
+                        foreach (var ss in subset.States)
+                        {
+                            Console.WriteLine(ss.StateName);
+                        }
+                        Console.WriteLine("..............");
+                        Console.WriteLine(states.Last().StateName);
+                        if (subset.States.Find(x => x.StateName == states.Last().StateName) != null)
+                        {
+                            from.IsEnd = true;
+                        }
 
                         if (toSubset.States.Find(x => x.StateName == states.Last().StateName) != null)
                         {

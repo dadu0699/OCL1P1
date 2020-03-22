@@ -31,7 +31,7 @@ namespace OCL1P1.controller
 
             indexToken = 0;
             indexState = 0;
-            epsilon = new Token(0, 0, 0, Token.Type.EPSILON, "&epsilon;");
+            epsilon = null;
 
             FactorizedEXP();
         }
@@ -186,11 +186,11 @@ namespace OCL1P1.controller
                     i++;
                     if (i > tokens.Count() - 1)
                     {
-                        tokens.Add(epsilon);
+                        tokens.Add(new Token(0, 0, 0, Token.Type.EPSILON, "&epsilon;"));
                     }
                     else
                     {
-                        tokens.Insert(i, epsilon);
+                        tokens.Insert(i, new Token(0, 0, 0, Token.Type.EPSILON, "&epsilon;"));
                     }
                     break;
                 }
@@ -246,8 +246,7 @@ namespace OCL1P1.controller
             List<Transition> auxTransitions = new List<Transition>();
             foreach (Transition transition in Transitions)
             {
-                if (transition.Token.TypeToken == Token.Type.EPSILON
-                    && transition.From != null)
+                if (transition.Token == null && transition.From != null)
                 {
                     auxTransitions.Add(transition);
                 }
