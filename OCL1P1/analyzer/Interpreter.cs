@@ -254,6 +254,18 @@ namespace OCL1P1.analyzer
                     RoutesNFA.Add(imageRouteOptimized);
                 }
 
+                // Subset Construction 
+                SubsetConstruction subsetConstruction = new SubsetConstruction(nfa.Transitions, nfa.States, nfa.Terminals);
+                DFAReport dfaReport = new DFAReport();
+
+                subsetConstruction.Construction();
+                dfaReport.ReportNFA("DFA_" + symbol.Name, subsetConstruction.Transitions);
+
+                imageRoute = Directory.GetCurrentDirectory() + "\\" + "DFA_" + symbol.Name + ".png";
+                if (File.Exists(imageRoute))
+                {
+                    RoutesNFA.Add(imageRoute);
+                }
             }
             else
             {

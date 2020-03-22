@@ -17,12 +17,14 @@ namespace OCL1P1.controller
 
         internal List<Transition> Transitions { get; set; }
         internal List<State> States { get; set; }
+        internal List<Token> Terminals { get; set; }
 
         public Thompson(Symbol symbol)
         {
             tokens = new List<Token>();
             Transitions = new List<Transition>();
             States = new List<State>();
+            Terminals = new List<Token>();
 
             this.symbol = symbol;
             tokens.AddRange(symbol.Value);
@@ -132,6 +134,7 @@ namespace OCL1P1.controller
                 case Token.Type.TABULATION:
                 case Token.Type.EPSILON:
                     rootTransition.Token = token;
+                    Terminals.Add(token);
                     Console.WriteLine(" -> " + rootTransition.Token.Value + " -> " + rootTransition.To.StateName);
                     break;
             }
@@ -243,7 +246,7 @@ namespace OCL1P1.controller
             List<Transition> auxTransitions = new List<Transition>();
             foreach (Transition transition in Transitions)
             {
-                if (transition.Token.TypeToken == Token.Type.EPSILON 
+                if (transition.Token.TypeToken == Token.Type.EPSILON
                     && transition.From != null)
                 {
                     auxTransitions.Add(transition);
@@ -251,7 +254,7 @@ namespace OCL1P1.controller
             }
 
             var numberOfStatesTDuplicates = Transitions.GroupBy(u => u.To)
-                .Select(x => new {Count = x.Count(), State = x.Key}).ToList();
+                .Select(x => new { Count = x.Count(), State = x.Key }).ToList();
             foreach (var item in numberOfStatesTDuplicates)
             {
                 if (item.Count > 1)
