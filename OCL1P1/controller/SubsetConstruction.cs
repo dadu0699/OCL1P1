@@ -200,7 +200,14 @@ namespace OCL1P1.controller
             {
                 indexState = States.FindIndex(a => a.StateName == item.From.StateName) + 1;
                 indexTerminal = terminalsM.FindIndex(a => a.Value == item.Token.Value) + 1;
-                statesM[indexState, indexTerminal] = item.To.StateName;
+                if (item.To.IsEnd)
+                {
+                    statesM[indexState, indexTerminal] = item.To.StateName + "#";
+                }
+                else
+                {
+                    statesM[indexState, indexTerminal] = item.To.StateName;
+                }
             }
 
             return statesM;

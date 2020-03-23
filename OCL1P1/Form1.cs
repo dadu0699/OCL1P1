@@ -20,7 +20,9 @@ namespace OCL1P1
         private Interpreter interpreter;
         private int countTab;
         private int indexImage;
+        private int indexTable;
         private List<string> images;
+        private List<string> tables;
 
         public Form1()
         {
@@ -167,6 +169,15 @@ namespace OCL1P1
             }
             automataImage.Image = null;
 
+            indexTable = 0;
+            tables = new List<string>();
+            if (tableBox.Image != null)
+            {
+                tableBox.Image.Dispose();
+
+            }
+            tableBox.Image = null;
+
             lexicalAnalyzer = new LexicalAnalyzer();
             lexicalAnalyzer.Scanner(content);
 
@@ -181,6 +192,12 @@ namespace OCL1P1
                     if (images.Count > 0)
                     {
                         LoadImage(0);
+                    }
+
+                    tables.AddRange(interpreter.RoutesTables);
+                    if (tables.Count > 0)
+                    {
+                        LoadTable(0);
                     }
                 }
                 else
@@ -249,6 +266,60 @@ namespace OCL1P1
             if (interpreter != null)
             {
                 interpreter.GenerateReports();
+            }
+        }
+
+        private void nextTButton_Click(object sender, EventArgs e)
+        {
+            if (tables != null && tables.Count > 0)
+            {
+                indexTable++;
+
+                if (indexTable > tables.Count - 1)
+                {
+                    indexTable = 0;
+                }
+
+                LoadTable(indexTable);
+            }
+        }
+
+        private void prevTButton_Click(object sender, EventArgs e)
+        {
+            if (tables != null && tables.Count > 0)
+            {
+                indexTable--;
+
+                if (indexTable < 0)
+                {
+                    indexTable = tables.Count - 1;
+                }
+
+                LoadTable(indexTable);
+            }
+        }
+
+        private void tableBox_Click(object sender, EventArgs e)
+        {
+            if (tableBox.Image != null)
+            {
+                Process.Start(tables[indexTable]);
+            }
+        }
+
+        private void LoadTable(int index)
+        {
+            if (tableBox.Image != null)
+            {
+                tableBox.Image.Dispose();
+
+            }
+            tableBox.Image = null;
+
+            if (File.Exists(tables[index]))
+            {
+                Image image = Image.FromFile(tables[index]);
+                tableBox.Image = image;
             }
         }
     }

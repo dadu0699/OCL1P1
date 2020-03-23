@@ -22,6 +22,7 @@ namespace OCL1P1.analyzer
         internal List<Error> ListError { get; set; }
         internal List<Symbol> SymbolTable { get; set; }
         public List<string> RoutesNFA { get; set; }
+        public List<string> RoutesTables { get; set; }
 
         public Interpreter(List<Token> listToken)
         {
@@ -29,6 +30,7 @@ namespace OCL1P1.analyzer
             ListError = new List<Error>();
             SymbolTable = new List<Symbol>();
             RoutesNFA = new List<string>();
+            RoutesTables = new List<string>();
 
             ListToken.AddRange(listToken);
             ListToken.Add(new Token(0, 0, 0, Token.Type.END, "END"));
@@ -243,6 +245,7 @@ namespace OCL1P1.analyzer
 
                 nfa.Construction();
                 nfaReport.ReportNFA(symbol.Name, nfa.Transitions);
+
                 nfa.RemoveUnnecessaryT();
                 nfaReport.ReportNFA(symbol.Name + "Optimized", nfa.Transitions);
 
@@ -260,10 +263,14 @@ namespace OCL1P1.analyzer
                 SubsetReport subsetReport = new SubsetReport();
 
                 subsetConstruction.Construction();
+                subsetReport.ReportSubset("T_" + symbol.Name, subsetConstruction.StatesMatrix()); 
+                imageRoute = Directory.GetCurrentDirectory() + "\\" + "T_" + symbol.Name + ".png";
+                if (File.Exists(imageRoute))
+                {
+                    RoutesTables.Add(imageRoute);
+                }
 
-                subsetReport.ReportSubset("T_" + symbol.Name, subsetConstruction.StatesMatrix());
                 dfaReport.ReportDFA("DFA_" + symbol.Name, subsetConstruction.Transitions);
-
                 imageRoute = Directory.GetCurrentDirectory() + "\\" + "DFA_" + symbol.Name + ".png";
                 if (File.Exists(imageRoute))
                 {

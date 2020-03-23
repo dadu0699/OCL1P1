@@ -42,6 +42,8 @@
             this.SymbolTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.nextTButton = new System.Windows.Forms.Button();
+            this.prevTButton = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableBox = new System.Windows.Forms.PictureBox();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -177,6 +179,8 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.nextTButton);
+            this.panel3.Controls.Add(this.prevTButton);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Controls.Add(this.panel6);
@@ -185,11 +189,49 @@
             this.panel3.Size = new System.Drawing.Size(506, 513);
             this.panel3.TabIndex = 3;
             // 
+            // nextTButton
+            // 
+            this.nextTButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nextTButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(44)))));
+            this.nextTButton.FlatAppearance.BorderSize = 0;
+            this.nextTButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(21)))), ((int)(((byte)(28)))));
+            this.nextTButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.nextTButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nextTButton.ForeColor = System.Drawing.Color.White;
+            this.nextTButton.Location = new System.Drawing.Point(260, 485);
+            this.nextTButton.Name = "nextTButton";
+            this.nextTButton.Size = new System.Drawing.Size(236, 20);
+            this.nextTButton.TabIndex = 4;
+            this.nextTButton.Text = "Siguiente";
+            this.nextTButton.UseVisualStyleBackColor = false;
+            this.nextTButton.Click += new System.EventHandler(this.nextTButton_Click);
+            // 
+            // prevTButton
+            // 
+            this.prevTButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.prevTButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(44)))));
+            this.prevTButton.FlatAppearance.BorderSize = 0;
+            this.prevTButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(21)))), ((int)(((byte)(28)))));
+            this.prevTButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.prevTButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prevTButton.ForeColor = System.Drawing.Color.White;
+            this.prevTButton.Location = new System.Drawing.Point(10, 485);
+            this.prevTButton.Name = "prevTButton";
+            this.prevTButton.Size = new System.Drawing.Size(236, 20);
+            this.prevTButton.TabIndex = 3;
+            this.prevTButton.Text = "Anterior";
+            this.prevTButton.UseVisualStyleBackColor = false;
+            this.prevTButton.Click += new System.EventHandler(this.prevTButton_Click);
+            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.Control;
             this.panel5.Controls.Add(this.tableBox);
-            this.panel5.Location = new System.Drawing.Point(0, 294);
+            this.panel5.Location = new System.Drawing.Point(0, 274);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(506, 219);
             this.panel5.TabIndex = 2;
@@ -198,15 +240,16 @@
             // 
             this.tableBox.Location = new System.Drawing.Point(10, 10);
             this.tableBox.Name = "tableBox";
-            this.tableBox.Size = new System.Drawing.Size(486, 195);
+            this.tableBox.Size = new System.Drawing.Size(486, 190);
             this.tableBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.tableBox.TabIndex = 0;
             this.tableBox.TabStop = false;
+            this.tableBox.Click += new System.EventHandler(this.tableBox_Click);
             // 
             // panel4
             // 
             this.panel4.Controls.Add(this.automataImage);
-            this.panel4.Location = new System.Drawing.Point(0, 60);
+            this.panel4.Location = new System.Drawing.Point(0, 40);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(506, 238);
             this.panel4.TabIndex = 1;
@@ -227,7 +270,7 @@
             this.panel6.Controls.Add(this.prevButton);
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(506, 60);
+            this.panel6.Size = new System.Drawing.Size(506, 40);
             this.panel6.TabIndex = 0;
             // 
             // nextButton
@@ -239,11 +282,11 @@
             this.nextButton.FlatAppearance.BorderSize = 0;
             this.nextButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(21)))), ((int)(((byte)(28)))));
             this.nextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.nextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nextButton.ForeColor = System.Drawing.Color.White;
             this.nextButton.Location = new System.Drawing.Point(260, 10);
             this.nextButton.Name = "nextButton";
-            this.nextButton.Size = new System.Drawing.Size(236, 40);
+            this.nextButton.Size = new System.Drawing.Size(236, 20);
             this.nextButton.TabIndex = 2;
             this.nextButton.Text = "Siguiente";
             this.nextButton.UseVisualStyleBackColor = false;
@@ -258,11 +301,11 @@
             this.prevButton.FlatAppearance.BorderSize = 0;
             this.prevButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(21)))), ((int)(((byte)(28)))));
             this.prevButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.prevButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prevButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.prevButton.ForeColor = System.Drawing.Color.White;
             this.prevButton.Location = new System.Drawing.Point(10, 10);
             this.prevButton.Name = "prevButton";
-            this.prevButton.Size = new System.Drawing.Size(236, 40);
+            this.prevButton.Size = new System.Drawing.Size(236, 20);
             this.prevButton.TabIndex = 1;
             this.prevButton.Text = "Anterior";
             this.prevButton.UseVisualStyleBackColor = false;
@@ -391,6 +434,8 @@
         private System.Windows.Forms.RichTextBox commandLineTextBox;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolStripMenuItem SymbolTableToolStripMenuItem;
+        private System.Windows.Forms.Button nextTButton;
+        private System.Windows.Forms.Button prevTButton;
     }
 }
 
