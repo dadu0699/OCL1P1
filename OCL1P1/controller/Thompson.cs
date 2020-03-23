@@ -117,7 +117,6 @@ namespace OCL1P1.controller
                     Transition t23A = new Transition(n2A.Acceptance.To, epsilon, s3A);
                     Transitions.Add(t23A);
 
-
                     Transition t03A = new Transition(rootState, epsilon, s3A);
                     Transitions.Add(t03A);
 
@@ -273,6 +272,7 @@ namespace OCL1P1.controller
                 if (item.Count > 1)
                 {
                     auxTransitions = auxTransitions.Where(x => x.From.StateName != item.State.StateName).ToList();
+                    auxTransitions = auxTransitions.Where(x => x.To.StateName != item.State.StateName).ToList();
                 }
             }
 
