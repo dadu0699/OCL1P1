@@ -68,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\DFAReport.cs" />
     <Compile Include="util\NFAReport.cs" />
-    <Compile Include="util\ReportSubset.cs" />
+    <Compile Include="util\SubsetReport.cs" />
     <Compile Include="util\XMLReport.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

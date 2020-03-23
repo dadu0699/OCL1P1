@@ -257,8 +257,11 @@ namespace OCL1P1.analyzer
                 // Subset Construction 
                 SubsetConstruction subsetConstruction = new SubsetConstruction(nfa.Transitions, nfa.States, nfa.Terminals);
                 DFAReport dfaReport = new DFAReport();
+                SubsetReport subsetReport = new SubsetReport();
 
                 subsetConstruction.Construction();
+
+                subsetReport.ReportSubset("T_" + symbol.Name, subsetConstruction.StatesMatrix());
                 dfaReport.ReportDFA("DFA_" + symbol.Name, subsetConstruction.Transitions);
 
                 imageRoute = Directory.GetCurrentDirectory() + "\\" + "DFA_" + symbol.Name + ".png";
