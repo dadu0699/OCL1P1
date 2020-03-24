@@ -125,7 +125,8 @@ namespace OCL1P1.controller
                 parentStatesList.Add(state);
                 foreach (Transition epsilonT in epsilonTransitions)
                 {
-                    if (epsilonT.From.StateName == state.StateName && parentStatesList.Find(x => x.StateName == epsilonT.To.StateName) == null)
+                    if (epsilonT.From.StateName == state.StateName 
+                        && parentStatesList.Find(x => x.StateName == epsilonT.To.StateName) == null)
                     {
                         cStates.AddRange(CSets(new List<State>() { epsilonT.To }, parentStatesList));
                     }

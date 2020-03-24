@@ -78,6 +78,10 @@ namespace OCL1P1.util
                 }
             }
 
+            graph.Append("\n\t\"\"[shape = none];");
+            graph.Append("\n\t\"\"");
+            graph.Append("->" + "S0");
+
             graph.Append("\n}");
             generateDotPNG(rdot, rpng);
         }
