@@ -150,7 +150,14 @@ namespace OCL1P1.analyzer
                         else
                         {
                             auxiliary += character;
-                            AddToken(Token.Type.STR);
+                            if (entry.ElementAt(i-1).Equals('\\'))
+                            {
+                                state = 3;
+                            }
+                            else
+                            {
+                                AddToken(Token.Type.STR);
+                            }
                         }
                         break;
                     case 4:
