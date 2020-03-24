@@ -47,7 +47,7 @@ namespace OCL1P1.util
             graph.Append("\n\ttable [label=<");
             graph.Append("\n\t\t<table border=\"0\" cellborder=\"1\" cellspacing=\"0\">");
 
-            
+
             for (int i = 0; i < statesMatrix.GetLength(0); i++)
             {
                 graph.Append("\n\t\t\t<tr>");
@@ -55,7 +55,11 @@ namespace OCL1P1.util
                 {
                     if (statesMatrix[i, j] != null && statesMatrix[i, j].Contains('#') && i > 0)
                     {
-                        graph.Append("\n\t\t\t\t<td bgcolor=\"burlywood1\" > " + statesMatrix[i, j].Replace("#","") + "</td>");
+                        graph.Append("\n\t\t\t\t<td bgcolor=\"burlywood1\" > " + statesMatrix[i, j].Replace("#", "") + "</td>");
+                    }
+                    else if (statesMatrix[i, j] != null)
+                    {
+                        graph.Append("\n\t\t\t\t<td>" + statesMatrix[i, j].Replace("<", "&lt;").Replace(">", "&gt;") + "</td>");
                     }
                     else
                     {

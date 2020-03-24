@@ -341,7 +341,7 @@
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Window;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(484, 372);
@@ -367,7 +367,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.commandLineTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(104)))), ((int)(((byte)(114)))));
             this.commandLineTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.commandLineTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commandLineTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.commandLineTextBox.ForeColor = System.Drawing.Color.White;
             this.commandLineTextBox.Location = new System.Drawing.Point(0, 402);
             this.commandLineTextBox.Name = "commandLineTextBox";
@@ -375,6 +375,7 @@
             this.commandLineTextBox.Size = new System.Drawing.Size(495, 111);
             this.commandLineTextBox.TabIndex = 2;
             this.commandLineTextBox.Text = "";
+            this.commandLineTextBox.WordWrap = false;
             // 
             // Form1
             // 

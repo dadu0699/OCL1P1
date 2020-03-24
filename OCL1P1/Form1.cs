@@ -199,6 +199,8 @@ namespace OCL1P1
                     {
                         LoadTable(0);
                     }
+
+                    commandLineTextBox.Text = interpreter.ConsoleMessage.ToString();
                 }
                 else
                 {

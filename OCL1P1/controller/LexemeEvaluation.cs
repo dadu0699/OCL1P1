@@ -27,38 +27,39 @@ namespace OCL1P1.controller
             indexChar = 0;
         }
 
-        public void Initialize()
+        public string Initialize()
         {
             State state = Evaluation((transitions.OrderBy(x => x.From.StateName)).ToList()[0].From);
-            Console.WriteLine();
+            StringBuilder str = new StringBuilder();
+
             if (state != null && state.IsEnd)
             {
-                Console.Write("CADENA ACEPTADA: \"");
+                str.Append("CADENA ACEPTADA: \"");
                 for (int i = 0; i < charsList.Count(); i++)
                 {
-                    Console.Write(charsList[i]);
+                    str.Append(charsList[i]);
                 }
-                Console.WriteLine("\"");
+                str.Append("\"");
             }
             else
             {
-                Console.Write("LA CADENA: \"");
+                str.Append("LA CADENA: \"");
                 for (int i = 0; i < charsList.Count(); i++)
                 {
-                    Console.Write(charsList[i]);
+                    str.Append(charsList[i]);
                 }
-                Console.Write("\" HA DEJADO DE SER ACEPTADA DESDE: \"");
+                str.Append("\" HA DEJADO DE SER ACEPTADA DESDE: \"");
                 for (int i = 0; i < indexChar; i++)
                 {
-                    Console.Write(charsList[i]);
+                    str.Append(charsList[i]);
                 }
-                Console.Write("\" QUEDANDOSE EN EL ESTADO ");
+                str.Append("\" QUEDANDOSE EN EL ESTADO ");
                 if (state != null)
                 {
-                    Console.Write(state.StateName);
+                    str.Append(state.StateName);
                 }
-                Console.WriteLine();
             }
+            return str.ToString();
         }
 
         private State Evaluation(State state)
@@ -69,14 +70,14 @@ namespace OCL1P1.controller
                 char character = charsList[indexChar];
                 State toState = null;
 
-                if (char.IsWhiteSpace(character))
+                /*if (char.IsWhiteSpace(character))
                 {
-                    if (character.CompareTo('\n') == 0 && character.CompareTo('\t') != 0)
+                    if (character.CompareTo('\n') != 0 && character.CompareTo('\t') != 0)
                     {
                         indexChar++;
                         character = charsList[indexChar];
                     }
-                }
+                }*/
 
                 foreach (Transition transition in statetransitions)
                 {

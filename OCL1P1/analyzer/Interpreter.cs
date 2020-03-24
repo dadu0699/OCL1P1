@@ -25,6 +25,7 @@ namespace OCL1P1.analyzer
         internal List<SetC> Sets { get; set; }
         public List<string> RoutesNFA { get; set; }
         public List<string> RoutesTables { get; set; }
+        public StringBuilder ConsoleMessage { get; set; }
 
         public Interpreter(List<Token> listToken)
         {
@@ -35,6 +36,8 @@ namespace OCL1P1.analyzer
             Sets = new List<SetC>();
             RoutesNFA = new List<string>();
             RoutesTables = new List<string>();
+
+            ConsoleMessage = new StringBuilder();
 
             ListToken.AddRange(listToken);
             ListToken.Add(new Token(0, 0, 0, Token.Type.END, "END"));
@@ -435,7 +438,7 @@ namespace OCL1P1.analyzer
                 {
                     string lexeme = preAnalysis.Value.Substring(1, preAnalysis.Value.Length - 2);
                     LexemeEvaluation lexemeEvaluation = new LexemeEvaluation(lexeme, expression.Transitions, Sets);
-                    lexemeEvaluation.Initialize();
+                    ConsoleMessage.AppendLine(lexemeEvaluation.Initialize() + "\n");
                 }
                 Parser(Token.Type.STR);
             }
@@ -539,6 +542,15 @@ namespace OCL1P1.analyzer
                 else if (set.Value[i].TypeToken == Token.Type.SYMBOL_COMMA)
                 {
 
+                    set.Value.RemoveAt(i);
+                }
+                else if (set.Value[i].TypeToken == Token.Type.CHARACTER_SET)
+                {
+                    string  str = set.Value[i].Value.Replace("[:","").Replace(":]", "");
+                    for (int j = 0; j < str.Length; j++)
+                    {
+                        symbols.Add(new Token(0, 0, 0, Token.Type.SYMBOL, str[j].ToString()));
+                    }
                     set.Value.RemoveAt(i);
                 }
             }
