@@ -70,7 +70,7 @@ namespace OCL1P1.controller
         {
             if (statesList.Count() > 0)
             {
-                List<State> cStates = CSets(statesList);
+                List<State> cStates = CSets(statesList, null);
                 Subset subset = CreateSubset(cStates);
 
                 if (subset != null && findState == false)
@@ -111,18 +111,23 @@ namespace OCL1P1.controller
             return null;
         }
 
-        private List<State> CSets(List<State> statesList)
+        private List<State> CSets(List<State> statesList, List<State> parentStatesList)
         {
             List<State> cStates = new List<State>();
+            if (parentStatesList == null)
+            {
+                parentStatesList = new List<State>();
+            }
 
             foreach (State state in statesList)
             {
                 cStates.Add(state);
+                parentStatesList.Add(state);
                 foreach (Transition epsilonT in epsilonTransitions)
                 {
-                    if (epsilonT.From.StateName == state.StateName)
+                    if (epsilonT.From.StateName == state.StateName && parentStatesList.Find(x => x.StateName == epsilonT.To.StateName) == null)
                     {
-                        cStates.AddRange(CSets(new List<State>() { epsilonT.To }));
+                        cStates.AddRange(CSets(new List<State>() { epsilonT.To }, parentStatesList));
                     }
                 }
             }
