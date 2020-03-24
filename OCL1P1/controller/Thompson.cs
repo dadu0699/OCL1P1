@@ -137,7 +137,7 @@ namespace OCL1P1.controller
                     {
                         Terminals.Add(token);
                     }
-                    Console.WriteLine(" -> " + rootTransition.Token.Value + " -> " + rootTransition.To.StateName);
+                    // Console.WriteLine(" -> " + rootTransition.Token.Value + " -> " + rootTransition.To.StateName);
                     break;
             }
             return rootNFA;

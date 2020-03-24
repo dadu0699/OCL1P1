@@ -21,6 +21,8 @@ namespace OCL1P1.analyzer
         internal List<Token> ListToken { get; set; }
         internal List<Error> ListError { get; set; }
         internal List<Symbol> SymbolTable { get; set; }
+        internal List<Expression> Expressions { get; set; }
+        internal List<SetC> Sets { get; set; }
         public List<string> RoutesNFA { get; set; }
         public List<string> RoutesTables { get; set; }
 
@@ -29,6 +31,8 @@ namespace OCL1P1.analyzer
             ListToken = new List<Token>();
             ListError = new List<Error>();
             SymbolTable = new List<Symbol>();
+            Expressions = new List<Expression>();
+            Sets = new List<SetC>();
             RoutesNFA = new List<string>();
             RoutesTables = new List<string>();
 
@@ -100,6 +104,8 @@ namespace OCL1P1.analyzer
                 List<Token> value = ASGMTCONJ();
                 Parser(Token.Type.SYMBOL_SEMICOLON);
                 AddSymbol(type, name, value);
+                Sets.Add(new SetC(name, value));
+                updateSet();
             }
             else
             {
@@ -218,6 +224,7 @@ namespace OCL1P1.analyzer
                 string type = "EXPR";
                 string name = ListToken[index - 1].Value;
                 AddSymbol(type, name, null);
+                Expressions.Add(new Expression(name, null));
 
                 DEFEXPR();
             }
@@ -236,8 +243,10 @@ namespace OCL1P1.analyzer
             if (preAnalysis.TypeToken == Token.Type.ASSIGNMENT_SIGN)
             {
                 Symbol symbol = GetSymbol(ListToken[index - 1].Value);
+                Expression expression = GetExpression(ListToken[index - 1].Value);
                 Parser(Token.Type.ASSIGNMENT_SIGN);
                 symbol.Value = STRUCEXPR();
+                expression.Value = symbol.Value;
 
                 // Thompson's construction
                 Thompson nfa = new Thompson(symbol);
@@ -263,7 +272,9 @@ namespace OCL1P1.analyzer
                 SubsetReport subsetReport = new SubsetReport();
 
                 subsetConstruction.Construction();
-                subsetReport.ReportSubset("T_" + symbol.Name, subsetConstruction.StatesMatrix()); 
+                expression.Transitions.AddRange(subsetConstruction.Transitions);
+
+                subsetReport.ReportSubset("T_" + symbol.Name, subsetConstruction.StatesMatrix());
                 imageRoute = Directory.GetCurrentDirectory() + "\\" + "T_" + symbol.Name + ".png";
                 if (File.Exists(imageRoute))
                 {
@@ -418,7 +429,14 @@ namespace OCL1P1.analyzer
         {
             if (preAnalysis.TypeToken == Token.Type.SYMBOL_COLON)
             {
+                Expression expression = GetExpression(ListToken[index - 1].Value);
                 Parser(Token.Type.SYMBOL_COLON);
+                if (expression != null)
+                {
+                    string lexeme = preAnalysis.Value.Substring(1, preAnalysis.Value.Length - 2);
+                    LexemeEvaluation lexemeEvaluation = new LexemeEvaluation(lexeme, expression.Transitions, Sets);
+                    lexemeEvaluation.Initialize();
+                }
                 Parser(Token.Type.STR);
             }
             else
@@ -466,13 +484,13 @@ namespace OCL1P1.analyzer
             syntacticError = true;
         }
 
-        public void AddSymbol(string type, string name, List<Token> value)
+        private void AddSymbol(string type, string name, List<Token> value)
         {
             idSymbol++;
             SymbolTable.Add(new Symbol(idSymbol, type, name, value));
         }
 
-        public Symbol GetSymbol(string name)
+        private Symbol GetSymbol(string name)
         {
             foreach (Symbol symbol in SymbolTable)
             {
@@ -484,10 +502,48 @@ namespace OCL1P1.analyzer
             return null;
         }
 
+        private Expression GetExpression(string name)
+        {
+            foreach (Expression expression in Expressions)
+            {
+                if (expression.Name.Equals(name))
+                {
+                    return expression;
+                }
+            }
+            return null;
+        }
+
         public void GenerateReports()
         {
             XMLReport xmlReport = new XMLReport();
             xmlReport.ReportSymbolTable(SymbolTable);
+        }
+
+        public void updateSet()
+        {
+            SetC set = Sets.Last();
+            List<Token> symbols = new List<Token>();
+
+            for (int i = 0; i < set.Value.Count(); i++)
+            {
+                if (set.Value[i].TypeToken == Token.Type.SET_SIGN)
+                {
+                    for (int j = (int) set.Value[i - 1].Value[0]; j <= (int) set.Value[i + 1].Value[0]; j++)
+                    {
+                        symbols.Add(new Token(0, 0, 0, Token.Type.SYMBOL, Convert.ToChar(j).ToString()));
+                    }
+
+                    set.Value.RemoveRange(i - 1, i + 2);
+                }
+                else if (set.Value[i].TypeToken == Token.Type.SYMBOL_COMMA)
+                {
+
+                    set.Value.RemoveAt(i);
+                }
+            }
+
+            set.Value.AddRange(symbols);
         }
     }
 }

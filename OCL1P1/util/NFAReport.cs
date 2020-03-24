@@ -64,7 +64,7 @@ namespace OCL1P1.util
 
                 if (item.Token != null)
                 {
-                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "").Replace("\\", "\\\\") + "\"];");
+                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"];");
                 }
                 else
                 {

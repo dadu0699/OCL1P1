@@ -49,6 +49,7 @@
     <Compile Include="analyzer\Interpreter.cs" />
     <Compile Include="analyzer\LexicalAnalyzer.cs" />
     <Compile Include="analyzer\SyntacticAnalyzer.cs" />
+    <Compile Include="controller\LexemeEvaluation.cs" />
     <Compile Include="controller\SubsetConstruction.cs" />
     <Compile Include="controller\Thompson.cs" />
     <Compile Include="Form1.cs">
@@ -58,7 +59,9 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="model\Error.cs" />
+    <Compile Include="model\Expression.cs" />
     <Compile Include="model\NFA.cs" />
+    <Compile Include="model\SetC.cs" />
     <Compile Include="model\State.cs" />
     <Compile Include="model\Subset.cs" />
     <Compile Include="model\Symbol.cs" />

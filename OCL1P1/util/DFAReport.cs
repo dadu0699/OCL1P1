@@ -44,7 +44,7 @@ namespace OCL1P1.util
             graph.Append("\n\tgraph [rankdir = LR, label=\"" + name + "\", labelloc=t, fontsize=30];");
             graph.Append("\n\tnode [shape = circle, height = 0.5, fixedsize = true, fontsize = 14];");
 
-            foreach (Transition item in transitions)
+            foreach (Transition item in transitions.OrderBy(x => x.From.StateName))
             {
                 if (item.From != null)
                 {
@@ -67,7 +67,7 @@ namespace OCL1P1.util
 
                 if (item.Token != null)
                 {
-                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\"", "").Replace("\\", "\\\\") + "\"];");
+                    graph.AppendLine("[label=\"" + item.Token.Value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"];");
                 }
                 else
                 {

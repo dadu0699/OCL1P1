@@ -331,12 +331,6 @@ namespace OCL1P1.analyzer
                 AddToken(Token.Type.SYMBOL_COMMA);
                 return true;
             }
-            else if (character.Equals('%'))
-            {
-                auxiliary += character;
-                AddToken(Token.Type.PERCENT_SIGN);
-                return true;
-            }
             else if (character.Equals('.'))
             {
                 auxiliary += character;
@@ -375,7 +369,7 @@ namespace OCL1P1.analyzer
             }
             else
             {
-                for (int i = 35; i <= 125; i++)
+                for (int i = 32; i <= 125; i++)
                 {
                     if (!char.IsDigit(Convert.ToChar(i)) && !char.IsLetter(Convert.ToChar(i)))
                     {

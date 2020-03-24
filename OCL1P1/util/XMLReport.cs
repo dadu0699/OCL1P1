@@ -103,7 +103,7 @@ namespace OCL1P1.util
                 streamWriter.Write("\t\t<Valor>");
                 foreach (Token token in item.Value)
                 {
-                    streamWriter.Write(token.Value);
+                    streamWriter.Write(token.Value + " ");
                 }
                 streamWriter.WriteLine("</Valor>");
                 streamWriter.WriteLine("\t</Simbolo>");
