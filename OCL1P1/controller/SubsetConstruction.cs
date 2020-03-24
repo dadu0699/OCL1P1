@@ -1,9 +1,6 @@
 ﻿using OCL1P1.model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OCL1P1.controller
 {

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OCL1P1.analyzer
 {
@@ -532,7 +531,7 @@ namespace OCL1P1.analyzer
             {
                 if (set.Value[i].TypeToken == Token.Type.SET_SIGN)
                 {
-                    for (int j = (int) set.Value[i - 1].Value[0]; j <= (int) set.Value[i + 1].Value[0]; j++)
+                    for (int j = (int)set.Value[i - 1].Value[0]; j <= (int)set.Value[i + 1].Value[0]; j++)
                     {
                         symbols.Add(new Token(0, 0, 0, Token.Type.SYMBOL, Convert.ToChar(j).ToString()));
                     }
@@ -546,7 +545,7 @@ namespace OCL1P1.analyzer
                 }
                 else if (set.Value[i].TypeToken == Token.Type.CHARACTER_SET)
                 {
-                    string  str = set.Value[i].Value.Replace("[:","").Replace(":]", "");
+                    string str = set.Value[i].Value.Replace("[:", "").Replace(":]", "");
                     for (int j = 0; j < str.Length; j++)
                     {
                         symbols.Add(new Token(0, 0, 0, Token.Type.SYMBOL, str[j].ToString()));

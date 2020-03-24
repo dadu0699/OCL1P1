@@ -1,10 +1,6 @@
 ﻿using OCL1P1.model;
 using OCL1P1.util;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OCL1P1.analyzer
 {
@@ -40,9 +36,9 @@ namespace OCL1P1.analyzer
 
         private void INSTP()
         {
-            if (preAnalysis.TypeToken == Token.Type.RESERVED_CONJ 
+            if (preAnalysis.TypeToken == Token.Type.RESERVED_CONJ
                 || preAnalysis.TypeToken == Token.Type.ID
-                || preAnalysis.TypeToken == Token.Type.COMMENT 
+                || preAnalysis.TypeToken == Token.Type.COMMENT
                 || preAnalysis.TypeToken == Token.Type.MULTILINE_COMMENT)
             {
                 INST();
