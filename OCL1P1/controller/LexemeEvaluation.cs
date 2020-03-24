@@ -173,10 +173,10 @@ namespace OCL1P1.controller
                 if (toState != null)
                 {
                     indexChar++;
-                    state = Evaluation(toState);
+                    toState = Evaluation(toState);
                 }
 
-                return state;
+                return toState;
             }
             return state;
         }
