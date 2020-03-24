@@ -1,4 +1,5 @@
 ﻿using OCL1P1.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -300,17 +301,13 @@ namespace OCL1P1.controller
                 {
                     auxTo.To = auxFrom.To;
                 }
-            }
 
-            foreach (Transition item in auxTransitions)
-            {
                 States.Remove(item.From);
                 Transitions.Remove(item);
-            }
-
-            for (int i = 0; i < States.Count(); i++)
-            {
-                States[i].StateName = i.ToString();
+                for (int i = 0; i < States.Count(); i++)
+                {
+                    States[i].StateName = i.ToString();
+                }
             }
         }
     }
