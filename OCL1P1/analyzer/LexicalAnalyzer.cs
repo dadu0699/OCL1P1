@@ -420,5 +420,11 @@ namespace OCL1P1.analyzer
             XMLReport xmlReport = new XMLReport();
             xmlReport.ReportLexicalErrors(ListError);
         }
+
+        public void GenerateReportLexicalErrorsPDF()
+        {
+            PDFReport pdfReport = new PDFReport();
+            pdfReport.GeneratePDF(ListError);
+        }
     }
 }

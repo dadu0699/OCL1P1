@@ -38,7 +38,7 @@
             this.saveTokensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveErrorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.errorLéxicoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LexicalErrorsPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SymbolTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -150,22 +150,23 @@
             // reportesToolStripMenuItem
             // 
             this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.errorLéxicoToolStripMenuItem,
+            this.LexicalErrorsPDFToolStripMenuItem,
             this.SymbolTableToolStripMenuItem});
             this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
             this.reportesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.reportesToolStripMenuItem.Text = "Reportes";
             // 
-            // errorLéxicoToolStripMenuItem
+            // LexicalErrorsPDFToolStripMenuItem
             // 
-            this.errorLéxicoToolStripMenuItem.Name = "errorLéxicoToolStripMenuItem";
-            this.errorLéxicoToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.errorLéxicoToolStripMenuItem.Text = "Error léxico";
+            this.LexicalErrorsPDFToolStripMenuItem.Name = "LexicalErrorsPDFToolStripMenuItem";
+            this.LexicalErrorsPDFToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.LexicalErrorsPDFToolStripMenuItem.Text = "Error léxico";
+            this.LexicalErrorsPDFToolStripMenuItem.Click += new System.EventHandler(this.LexicalErrorsPDFToolStripMenuItem_Click);
             // 
             // SymbolTableToolStripMenuItem
             // 
             this.SymbolTableToolStripMenuItem.Name = "SymbolTableToolStripMenuItem";
-            this.SymbolTableToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.SymbolTableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.SymbolTableToolStripMenuItem.Text = "Tabla de símbolos";
             this.SymbolTableToolStripMenuItem.Click += new System.EventHandler(this.SymbolTableToolStripMenuItem_Click);
             // 
@@ -420,7 +421,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveTokensToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveErrorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem errorLéxicoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LexicalErrorsPDFToolStripMenuItem;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.PictureBox tableBox;

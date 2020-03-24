@@ -321,5 +321,13 @@ namespace OCL1P1
                 tableBox.Image = image;
             }
         }
+
+        private void LexicalErrorsPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lexicalAnalyzer != null)
+            {
+                lexicalAnalyzer.GenerateReportLexicalErrorsPDF();
+            }
+        }
     }
 }
