@@ -80,10 +80,11 @@ EXP2 : "&a TEXTO>1";
 EXP2 : "TEXTO ! ! @ @ % $";
 
 
-CONJ: todo -> [:ABDEFGHIJKLMNOPQTUVWZ:]; 
-TODO -> + |  | {todo} "\n" "\t";
-TODO: "ADB
 
-      EFG
-      HI
-      JKL";//correcto
+CONJ: todo -> [:ABDEFGHIJKLMNOPQRSTUVWXYZ:]; 
+TODO -> + |  | {todo} \n \t;
+TODO: "ADB
+EXXF
+	D	G
+
+HIJ	KL";//correcto

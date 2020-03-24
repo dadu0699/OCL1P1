@@ -175,7 +175,10 @@ namespace OCL1P1.controller
                 else if (tokens[i].TypeToken == Token.Type.ID
                     || tokens[i].TypeToken == Token.Type.NUMBER
                     || tokens[i].TypeToken == Token.Type.SYMBOL
-                    || tokens[i].TypeToken == Token.Type.STR
+                    || tokens[i].TypeToken == Token.Type.LINE_BREAK
+                    || tokens[i].TypeToken == Token.Type.SINGLE_QUOTE
+                    || tokens[i].TypeToken == Token.Type.DOUBLE_QUOTE
+                    || tokens[i].TypeToken == Token.Type.TABULATION
                     || tokens[i].TypeToken == Token.Type.EPSILON)
                 {
                     index--;
@@ -212,6 +215,10 @@ namespace OCL1P1.controller
                     || tokens[i].TypeToken == Token.Type.NUMBER
                     || tokens[i].TypeToken == Token.Type.SYMBOL
                     || tokens[i].TypeToken == Token.Type.STR
+                    || tokens[i].TypeToken == Token.Type.LINE_BREAK
+                    || tokens[i].TypeToken == Token.Type.SINGLE_QUOTE
+                    || tokens[i].TypeToken == Token.Type.DOUBLE_QUOTE
+                    || tokens[i].TypeToken == Token.Type.TABULATION
                     || tokens[i].TypeToken == Token.Type.EPSILON)
                 {
                     index--;
