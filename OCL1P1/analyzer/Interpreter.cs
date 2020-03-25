@@ -437,7 +437,7 @@ namespace OCL1P1.analyzer
                 {
                     string lexeme = preAnalysis.Value.Substring(1, preAnalysis.Value.Length - 2);
                     LexemeEvaluation lexemeEvaluation = new LexemeEvaluation(lexeme, expression.Transitions, Sets);
-                    ConsoleMessage.AppendLine(lexemeEvaluation.Initialize() + "\n");
+                    ConsoleMessage.AppendLine(expression.Name + ":\n    " + lexemeEvaluation.Initialize() + "\n");
                 }
                 Parser(Token.Type.STR);
             }
