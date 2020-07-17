@@ -1,0 +1,57 @@
+// Se quitaron las comillas dobles en los caracteres especiales y se quito el \r
+// Las expresiones de er1 no son aceptadas por que el conjunto solo llega a la letra f
+// Las expresiones de TODO se cambiaron los espacios por tabulaciones
+
+<!
+\\CALIFICACION DEL [:TODO:]//
+!>
+
+CONJ: letras -> a~f;
+CONJ: LETRAS -> A~F;
+CONJ: digitos -> 0~9;
+//CONJ: todo -> [:todo:];
+CONJ: todo -> [:ABCDEFGHIJKLMNÑOPQRSTUVWXYZ:];
+
+<!////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////PROYECTO 1/////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////!>
+
+EXP1 -> . "#" * | | {letras} {LETRAS} {digitos};
+TODO -> * | | {todo} \n \t;
+er1 -> . {letras} *|{letras} |  {digitos} "_";
+er2 -> . . . *| ."c""d" . "a" "b" "b" "c" +"d";
+
+er1 : "abecedario_cadena1_cadena2";
+er1 : "z";
+er1 : "1uno"; //error
+er2 : "aaaa"; //error
+er2 : "bcdddd";
+er2 : "bcd";
+er2 : "ababcdabcdbc"; //error falta d al final
+EXP1: "#3C2E2E";//correcto
+EXP1: "#520A0A";//correcto
+EXP1: "#D88888";//correcto
+EXP1: "#41DA90";//correcto
+EXP1: "#591224";//correcto
+EXP1: "#BEB6B8";//correcto
+EXP1: "2#143EA";//incorrecto
+TODO: "C
+	O
+		M
+			P
+				I
+					L
+						A
+							D
+								O
+									R
+										E
+											S";//correcto
+TODO: "ADB
+	EFG
+	HI
+	JKL";//correcto
